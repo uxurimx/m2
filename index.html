@@ -648,15 +648,69 @@
 
 
     <script>
+        // Inicializar iconos al cargar
         lucide.createIcons();
 
-        // --- DATOS DEL ARCHIVO TEXTO ---
+        // --- 1. DATOS DE LOS MODALES (VISION) ---
+        // Definimos esto al inicio para evitar errores de referencia
+        const visionData = {
+            'wine': {
+                title: 'Micro-Viñedo Personal',
+                tag: 'Agri-Tech',
+                desc: 'Deja de soñar con tener un viñedo "algún día". Renta 500m² en zona volcánica, monitorea la uva desde tu celular y recibe tus botellas personalizadas al final de la temporada.',
+                speed: 'Lanzamiento en: 3 Semanas',
+                feats: ['Sin comprar tierra (Ahorras 95%).', 'Marca propia y etiquetado.', 'Gestión remota total.'],
+                img: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80'
+            },
+            'glamping': {
+                title: 'Glamping & Hospitalidad',
+                tag: 'Nomadismo',
+                desc: 'Instala domos geodésicos en un bosque de niebla. Valida tu modelo de negocio en temporada alta y retírate si deseas. Cero concreto, cero huella.',
+                speed: 'Instalación en: 7 Días',
+                feats: ['ROI estimado: 6-8 meses.', 'Permisos simplificados.', 'Acceso a zonas vírgenes.'],
+                img: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80'
+            },
+            'science': {
+                title: 'Laboratorio de Campo (R&D)',
+                tag: 'Ciencia',
+                desc: 'Para startups de AgTech. Renta condiciones específicas (pH, altura, humedad) por semanas para probar tus drones o semillas.',
+                speed: 'Acceso: Inmediato',
+                feats: ['Data histórica disponible.', 'Seguridad perimetral.', 'Contratos flexibles.'],
+                img: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80'
+            },
+            'impact': {
+                title: 'Inversión Climática',
+                tag: 'Impacto',
+                desc: 'Financia la regeneración de tierra degradada. Los sensores IoT miden la captura de CO2 y generan créditos de carbono.',
+                speed: 'Certificación: Automática',
+                feats: ['Activo líquido (Créditos).', 'Trazabilidad Blockchain.', 'Impacto real medible.'],
+                img: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80'
+            },
+            'social': {
+                title: 'Tu Spot Privado (24h)',
+                tag: 'Experiencia',
+                desc: 'Renta un pedazo de naturaleza privado por 24 horas. Carnita asada, telescopio o fogata con amigos sin vecinos molestos.',
+                speed: 'Reserva: Instantánea',
+                feats: ['Privacidad total.', 'Acceso vehicular seguro.', 'Uso por evento único.'],
+                img: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80'
+            },
+            'farm': {
+                title: 'Farm-to-Table Real',
+                tag: 'Sostenible',
+                desc: 'Cultivos exclusivos para restaurantes. Nosotros cuidamos la siembra, tú recibes la cosecha de calidad Michelin.',
+                speed: 'Setup: 48 Horas',
+                feats: ['Menú con ingredientes propios.', 'Trazabilidad total.', 'Sin intermediarios.'],
+                img: 'https://images.unsplash.com/photo-1595855709940-fa13725797d7?auto=format&fit=crop&q=80'
+            }
+        };
+
+        // --- 2. CONFIGURACIÓN DEL MAPA/GRID ---
         const zones = {
             'A': { 
                 name: 'Zona Volcánica Alta', 
                 desc: 'Suelo poroso rico en minerales volcánicos. Drenaje excelente.',
                 color: 'border-l-red-500', 
-                basePrice: 0.5 // USD por hora por parcela
+                basePrice: 0.5 
             },
             'B': { 
                 name: 'Valle de Arcilla', 
@@ -673,152 +727,99 @@
         };
 
         let state = {
-            selected: [], // Array de IDs
-            lastZoneType: null // Para mantener referencia del tipo de zona
+            selected: [], 
+            lastZoneType: null
         };
 
-        // --- INICIALIZACIÓN DEL GRID ---
+        // Generar Grid
         const grid = document.getElementById('grid-container');
-        
-        // Generar 64 parcelas
-        for(let i=0; i<64; i++) {
-            const div = document.createElement('div');
-            
-            // Definir zona geográfica simulada
-            let zKey = 'B';
-            if(i < 16) zKey = 'A'; // Montaña
-            if(i > 48) zKey = 'C'; // Bosque
+        if(grid) {
+            for(let i=0; i<64; i++) {
+                const div = document.createElement('div');
+                let zKey = 'B';
+                if(i < 16) zKey = 'A';
+                if(i > 48) zKey = 'C';
 
-            // Simular ocupación aleatoria (20% de probabilidad)
-            const isOccupied = Math.random() < 0.2;
+                const isOccupied = Math.random() < 0.2; // 20% ocupado
 
-            div.className = `plot ${isOccupied ? 'occupied' : ''}`;
-            div.dataset.zone = zKey;
-            div.dataset.id = i;
-            
-            // Solo agregar evento click si no está ocupado
-            if(!isOccupied) {
-                div.onclick = () => togglePlot(div, zKey);
+                div.className = `plot ${isOccupied ? 'occupied' : ''}`;
+                div.dataset.zone = zKey;
+                div.dataset.id = i;
+                
+                if(!isOccupied) {
+                    div.onclick = () => togglePlot(div, zKey);
+                }
+                grid.appendChild(div);
             }
-            
-            grid.appendChild(div);
         }
 
-        // --- FUNCIONES CORE ---
-        function setMode(mode) {
-            state.mode = mode;
-            state.selected = [];
-            document.querySelectorAll('.plot').forEach(p => p.classList.remove('selected'));
-            
-            // UI Toggles
-            const btnAgri = document.getElementById('btn-agri');
-            const btnEvent = document.getElementById('btn-event');
-            
-            if(mode === 'agricola') {
-                btnAgri.className = "px-6 py-2 rounded-full border border-green-500/50 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest transition-all";
-                btnEvent.className = "px-6 py-2 rounded-full border border-white/10 text-gray-500 hover:text-white text-xs font-bold uppercase tracking-widest transition-all";
-                updateTimeLabel();
-            } else {
-                btnEvent.className = "px-6 py-2 rounded-full border border-purple-500/50 bg-purple-500/10 text-purple-400 text-xs font-bold uppercase tracking-widest transition-all";
-                btnAgri.className = "px-6 py-2 rounded-full border border-white/10 text-gray-500 hover:text-white text-xs font-bold uppercase tracking-widest transition-all";
-                updateTimeLabel();
-            }
-            updateInfoPanel(null);
-        }
-
-        // --- LÓGICA DE SELECCIÓN ---
+        // --- 3. LÓGICA DE INTERACCIÓN DEL GRID ---
         function togglePlot(div, zoneKey) {
             const id = div.dataset.id;
             
             if(div.classList.contains('selected')) {
-                // Deseleccionar
                 div.classList.remove('selected');
                 state.selected = state.selected.filter(x => x !== id);
             } else {
-                // Seleccionar
                 div.classList.add('selected');
                 state.selected.push(id);
-                // Guardamos la última zona tocada para mostrar info de ese tipo
                 state.lastZoneType = zoneKey;
             }
-
             updateUI();
         }
 
-        // --- ACTUALIZACIÓN DE UI (Panel y Precios) ---
         function updateUI() {
             const panelEmpty = document.getElementById('panel-empty');
             const panelContent = document.getElementById('panel-content');
             const panelInfo = document.getElementById('info-panel');
 
-            // 1. Manejo del Panel de Info
             if (state.selected.length === 0) {
                 panelEmpty.classList.remove('hidden');
                 panelContent.classList.add('hidden');
-                panelInfo.classList.remove('border-l-red-500', 'border-l-yellow-500', 'border-l-green-500', 'border-l-4');
+                // Limpiar colores
+                panelInfo.className = "glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative";
+                document.getElementById('price-display').innerText = "0";
             } else {
                 panelEmpty.classList.add('hidden');
                 panelContent.classList.remove('hidden');
 
-                // Usamos datos de la última zona seleccionada para el contexto
                 const zoneData = zones[state.lastZoneType];
                 
-                // Actualizar Textos
                 document.getElementById('panel-title').innerText = zoneData.name;
                 document.getElementById('panel-desc').innerText = zoneData.desc;
                 document.getElementById('panel-count').innerText = state.selected.length;
-                
-                // Calculo de M2 (Asumiendo 500m2 por parcela)
-                const totalM2 = state.selected.length * 500;
-                document.getElementById('panel-area').innerText = totalM2.toLocaleString();
+                document.getElementById('panel-area').innerText = (state.selected.length * 500).toLocaleString();
 
-                // Estilo del borde del panel
                 panelInfo.className = `glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative border-l-4 ${zoneData.color}`;
+                
+                calculatePrice();
             }
-
-            // 2. Calcular Precio
-            calculatePrice();
         }
 
-        // --- LÓGICA DE TIEMPO Y PRECIO ---
+        // --- 4. LÓGICA DE TIEMPO Y PRECIO ---
         function updateTimeContext() {
             calculatePrice();
         }
 
         function calculatePrice() {
-            if(state.selected.length === 0) {
-                document.getElementById('price-display').innerText = "0";
-                return;
-            }
+            if(state.selected.length === 0) return;
 
-            // Obtener valores de tiempo
             const val = parseFloat(document.getElementById('duration-val').value) || 0;
             const unit = document.getElementById('duration-unit').value;
             
-            // Factores de conversión a HORAS (unidad base)
-            const factors = {
-                'h': 1,
-                'd': 24,
-                'm': 720, // 30 días
-                'y': 8760 // 365 días
-            };
-
+            const factors = { 'h': 1, 'd': 24, 'm': 720, 'y': 8760 };
             const totalHours = val * factors[unit];
-            
-            // Precio Base promedio de las zonas seleccionadas (simplificado: usa la última zona)
-            // En un sistema real promediaríamos el costo de cada parcela individual
             const zonePricePerHour = zones[state.lastZoneType].basePrice; 
             
             let total = zonePricePerHour * state.selected.length * totalHours;
 
-            // Lógica de Descuentos
             const badge = document.getElementById('discount-badge');
-            if(totalHours >= 720) { // +1 Mes
-                total = total * 0.8; // 20% descuento
+            if(totalHours >= 720) { 
+                total = total * 0.8; 
                 badge.innerText = "Descuento Larga Estancia (20%)";
                 badge.className = "text-[10px] font-mono text-green-400";
             } else if (totalHours >= 24) {
-                total = total * 0.95; // 5% descuento
+                total = total * 0.95; 
                 badge.innerText = "Descuento Diario (5%)";
                 badge.className = "text-[10px] font-mono text-blue-400";
             } else {
@@ -829,221 +830,43 @@
             document.getElementById('price-display').innerText = Math.round(total).toLocaleString();
         }
 
-        // --- LÓGICA DE TABS ---
+        // --- 5. TABS DEL PANEL ---
         function switchTab(tabName) {
-            // 1. Ocultar todos los contenidos
             ['resumen', 'suelo', 'legal'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.add('hidden');
-                // Reset botones
+                const content = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`tab-btn-${t}`);
-                btn.classList.remove('tab-btn-active');
-                btn.classList.add('tab-btn-inactive');
+                
+                if(content && btn) {
+                    content.classList.add('hidden');
+                    btn.classList.remove('tab-btn-active');
+                    btn.classList.add('tab-btn-inactive');
+                }
             });
 
-            // 2. Mostrar seleccionado
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`tab-btn-${tabName}`);
             activeBtn.classList.remove('tab-btn-inactive');
             activeBtn.classList.add('tab-btn-active');
         }
 
-        function updateInfoPanel(zone) {
-    const panel = document.getElementById('info-panel');
-    
-    // Clases base constantes para mantener la estructura
-    const baseClasses = "glass-panel p-6 rounded-2xl min-h-[200px] flex flex-col justify-center transition-all";
-
-    if(!zone) {
-        // REPARACIÓN: Reseteamos las clases al estado base limpio
-        panel.className = baseClasses;
-        panel.innerHTML = `
-            <div class="text-center space-y-2 fade-in">
-                <i data-lucide="mouse-pointer-2" class="w-8 h-8 mx-auto text-gray-600 mb-2"></i>
-                <h3 class="text-white font-bold">Selecciona una parcela</h3>
-                <p class="text-xs text-gray-500">Haz clic en el mapa para analizar el suelo.</p>
-            </div>`;
-        lucide.createIcons();
-        return;
-    }
-
-    // Aplica clases base + colores de zona + borde activo
-    panel.className = `${baseClasses} ${zone.color} border-l-4`;
-    
-    panel.innerHTML = `
-        <div class="fade-in space-y-3">
-            <div class="flex justify-between items-start">
-                <h3 class="text-lg font-bold text-white uppercase">${zone.name}</h3>
-                <span class="bg-white/10 px-2 py-1 rounded text-[10px] uppercase text-white">${state.mode}</span>
-            </div>
-            <p class="text-xs text-gray-400">${zone.bio}</p>
-            
-            <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-white/10">
-                <div>
-                    <span class="text-[10px] text-gray-600 uppercase block">pH Suelo</span>
-                    <span class="text-white font-mono text-sm">6.5 - 7.0</span>
-                </div>
-                <div>
-                    <span class="text-[10px] text-gray-600 uppercase block">Disponibilidad</span>
-                    <span class="text-green-400 font-mono text-sm">Inmediata</span>
-                </div>
-            </div>
-        </div>
-    `;
-    lucide.createIcons(); // Reactiva los iconos en el nuevo contenido
-}
-
-        // --- LOGICA DE TIEMPO Y PRECIO ---
-        const slider = document.getElementById('time-slider');
-        slider.oninput = function() {
-            state.time = this.value;
-            updateTimeLabel();
-            calcTotal();
-        }
-
-        function updateTimeLabel() {
-            const display = document.getElementById('time-display');
-            const context = document.getElementById('time-context');
-            
-            if(state.mode === 'agricola') {
-                display.innerText = state.time == 1 ? "1 Ciclo (6 Meses)" : `${state.time} Ciclos (${state.time * 6} Meses)`;
-                context.innerText = state.time > 5 ? "Descuento aplicado: 15% (Largo Plazo)" : "Descuento aplicado: 0%";
-            } else {
-                display.innerText = state.time == 1 ? "1 Fin de Semana" : `${state.time} Fines de Semana`;
-                context.innerText = "Tarifa dinámica por temporada alta";
-            }
-        }
-
-        function calcTotal() {
-            const basePrice = state.mode === 'agricola' ? 2000 : 800; // Precio base
-            const area = state.selected.length;
-            let total = basePrice * area * state.time;
-            
-            // Descuento simple
-            if(state.mode === 'agricola' && state.time > 5) total = total * 0.85;
-
-            document.getElementById('price-display').innerText = total.toLocaleString();
-        }
-
-        // --- SWITCH DE PERSONAS (USER vs OWNER) ---
-        function togglePersona(type) {
-            const tabUser = document.getElementById('tab-user');
-            const tabOwner = document.getElementById('tab-owner');
-            const contentUser = document.getElementById('content-user');
-            const contentOwner = document.getElementById('content-owner');
-
-            if(type === 'user') {
-                tabUser.classList.add('tab-active', 'shadow-lg');
-                tabUser.classList.remove('tab-inactive');
-                tabOwner.classList.remove('tab-active', 'shadow-lg');
-                tabOwner.classList.add('tab-inactive');
-                
-                contentUser.classList.remove('hidden');
-                contentOwner.classList.add('hidden');
-            } else {
-                tabOwner.classList.add('tab-active', 'shadow-lg');
-                tabOwner.classList.remove('tab-inactive');
-                tabUser.classList.remove('tab-active', 'shadow-lg');
-                tabUser.classList.add('tab-inactive');
-                
-                contentOwner.classList.remove('hidden');
-                contentUser.classList.add('hidden');
-            }
-        }
-
-        // --- SISTEMA DE MODAL VISION ---
-        const visionData = {
-            'wine': {
-                title: 'Micro-Viñedo Personal',
-                tag: 'Agri-Tech',
-                desc: 'Deja de soñar con tener un viñedo "algún día". Renta 500m² en zona volcánica, monitorea la uva desde tu celular y recibe tus botellas personalizadas al final de la temporada. Nosotros gestionamos a los agricultores expertos.',
-                speed: 'Lanzamiento en: 3 Semanas',
-                feats: [
-                    'Sin comprar tierra (Ahorras 95% de inversión inicial).',
-                    'Marca propia: Diseña tu etiqueta y botella.',
-                    'Gestión remota total vía App.'
-                ],
-                img: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80'
-            },
-            'glamping': {
-                title: 'Glamping & Hospitalidad',
-                tag: 'Nomadismo',
-                desc: 'El turismo cambió. Los viajeros buscan experiencias, no hoteles. Instala 3 domos geodésicos en un bosque de niebla. Valida tu modelo de negocio en temporada alta y retírate si deseas. Cero concreto, cero huella.',
-                speed: 'Instalación en: 7 Días',
-                feats: [
-                    'ROI estimado: 6-8 meses (vs 15 años en bienes raíces).',
-                    'Permisos simplificados (Estructuras temporales).',
-                    'Acceso a zonas vírgenes inalcanzables para hoteles.'
-                ],
-                img: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80'
-            },
-            'science': {
-                title: 'Laboratorio de Campo (R&D)',
-                tag: 'Ciencia',
-                desc: 'Para startups de AgTech y Biotecnología. No necesitas comprar una granja para probar tus drones o semillas modificadas. Renta condiciones específicas (pH, altura, humedad) por semanas.',
-                speed: 'Acceso: Inmediato',
-                feats: [
-                    'Data histórica del suelo disponible vía API.',
-                    'Seguridad perimetral y conectividad Starlink.',
-                    'Contratos flexibles para iteración rápida.'
-                ],
-                img: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80'
-            },
-            'impact': {
-                title: 'Inversión Climática',
-                tag: 'Impacto',
-                desc: 'Convierte la tierra en un pulmón. Financia la regeneración de una hectárea degradada. Los sensores IoT miden la captura de CO2 y generan créditos de carbono tokenizados en tu wallet automáticamente.',
-                speed: 'Certificación: Automática',
-                feats: [
-                    'Activo líquido: Vende tus créditos en mercado secundario.',
-                    'Trazabilidad total en Blockchain (Transparencia).',
-                    'Impacto real: Fotos satelitales mensuales.'
-                ],
-                img: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80'
-            },
-            'social': {
-                title: 'Tu Spot Privado (24h)',
-                tag: 'Experiencia',
-                desc: 'Recupera la conexión humana. Renta un pedazo de naturaleza seguro y privado por 24 horas. Ideal para armar la carnita asada lejos del ruido, llevar tu telescopio para ver las estrellas sin contaminación lumínica o simplemente sentarte frente a una fogata con tus amigos.',
-                speed: 'Reserva: Instantánea',
-                feats: [
-                    'Privacidad total: Sin vecinos, solo tú y tu gente.',
-                    'Seguro y Accesible: Coordenadas claras y acceso vehicular.',
-                    'Cero compromiso: Úsalo un sábado, olvídalo el domingo.'
-                ],
-                img: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80'
-            },
-            'farm': {
-                title: 'Farm-to-Table Real',
-                tag: 'Sostenible',
-                desc: '¿Tienes un restaurante y quieres calidad Michelin? O ¿Eres una familia que quiere salud real? Renta surcos específicos. Nosotros cuidamos la siembra, tú recibes la cosecha. Tomates heirloom, calabazas orgánicas o hierbas finas que no encuentras en el súper.',
-                speed: 'Setup: 48 Horas',
-                feats: [
-                    'Diferenciación: Menú con ingredientes únicos y propios.',
-                    'Trazabilidad: Tu cliente sabrá exactamente dónde creció su comida.',
-                    'Ahorro: Elimina intermediarios, del suelo a tu cocina.'
-                ],
-                img: 'https://images.unsplash.com/photo-1595855709940-fa13725797d7?auto=format&fit=crop&q=80'
-            },
-        };
-
+        // --- 6. FUNCIONES DEL MODAL (VISION) ---
         function openVision(key) {
             const data = visionData[key];
+            if(!data) return;
+
             const modal = document.getElementById('vision-modal');
             const content = document.getElementById('modal-content');
             
-            // Llenar datos
             document.getElementById('m-title').innerText = data.title;
             document.getElementById('m-tag').innerText = data.tag;
             document.getElementById('m-desc').innerText = data.desc;
             document.getElementById('m-speed').innerText = data.speed;
             document.getElementById('m-img').src = data.img;
             
-            // Listas
             document.getElementById('m-feat1').innerText = data.feats[0];
             document.getElementById('m-feat2').innerText = data.feats[1];
             document.getElementById('m-feat3').innerText = data.feats[2];
 
-            // Animación de entrada
             modal.classList.remove('hidden');
             setTimeout(() => {
                 content.classList.remove('scale-95', 'opacity-0');
@@ -1065,44 +888,62 @@
             }, 300);
         }
 
-        // --- LOGICA DE PROCESO CORREGIDA ---
+        // --- 7. LÓGICA DE SWITCH PERSONA (USER/OWNER) ---
+        function togglePersona(type) {
+            const tabUser = document.getElementById('tab-user');
+            const tabOwner = document.getElementById('tab-owner');
+            const contentUser = document.getElementById('content-user');
+            const contentOwner = document.getElementById('content-owner');
+
+            if(type === 'user') {
+                tabUser.classList.add('tab-active', 'shadow-lg');
+                tabUser.classList.remove('tab-inactive');
+                tabOwner.classList.remove('tab-active', 'shadow-lg');
+                tabOwner.classList.add('tab-inactive');
+                contentUser.classList.remove('hidden');
+                contentOwner.classList.add('hidden');
+            } else {
+                tabOwner.classList.add('tab-active', 'shadow-lg');
+                tabOwner.classList.remove('tab-inactive');
+                tabUser.classList.remove('tab-active', 'shadow-lg');
+                tabUser.classList.add('tab-inactive');
+                contentOwner.classList.remove('hidden');
+                contentUser.classList.add('hidden');
+            }
+        }
+
+        // --- 8. LÓGICA DE PROCESO (COMO FUNCIONA) ---
         function setProcess(stepId) {
-            // 1. Resetear estilos visuales de todos los pasos
             document.querySelectorAll('.process-step').forEach(el => {
-                // Quitamos el estilo de "activo"
                 el.classList.remove('bg-white/10', 'border-white/10');
                 el.classList.add('border-transparent');
             });
 
-            // 2. Activar paso seleccionado
             const activeStep = document.getElementById(`step-${stepId}`);
             if (activeStep) {
                 activeStep.classList.remove('border-transparent');
                 activeStep.classList.add('bg-white/10', 'border-white/10');
             }
 
-            // 3. Cambiar contenido de la consola derecha
             document.querySelectorAll('.process-content').forEach(el => el.classList.add('hidden'));
             
             const content = document.getElementById(`p-content-${stepId}`);
             if (content) {
                 content.classList.remove('hidden');
-                // Reiniciar animación
                 content.classList.remove('fade-in');
-                void content.offsetWidth; // Trigger reflow para reiniciar animación
+                void content.offsetWidth; 
                 content.classList.add('fade-in');
             }
 
-            // 4. Actualizar status bar simulado
             const statusText = ['SCANNING_TERRAIN', 'MINTING_ASSET', 'MATCHING_USER', 'EXECUTING_PAYMENT'];
-            const statusElement = document.getElementById('console-status');
-            if (statusElement) {
-                statusElement.innerText = `SYSTEM: ${statusText[stepId-1]}...`;
-            }
+            const statusEl = document.getElementById('console-status');
+            if(statusEl) statusEl.innerText = `SYSTEM: ${statusText[stepId-1]}...`;
+            
+            // Re-renderizar iconos por si acaso
+            lucide.createIcons();
         }
 
-        // Inicializar
-        // Usamos setTimeout para asegurar que el DOM esté listo
+        // --- INICIALIZACIÓN SEGURA ---
         setTimeout(() => {
             setProcess(1);
         }, 100);
