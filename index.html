@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIERRA VIVA | Protocolo de Acceso Descentralizado</title>
+    <title>Landm2 | Acceso Descentralizado</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -66,6 +66,18 @@
         
         .tab-active { background: #fff; color: #000; }
         .tab-inactive { background: transparent; color: #666; }
+
+        /* Agrega esto a tus estilos existentes */
+.plot.occupied {
+    background: rgba(255, 255, 255, 0.05); /* Gris oscuro */
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    cursor: not-allowed;
+    pointer-events: none; /* No clickable */
+}
+/* Estilo para pestañas del panel */
+.tab-btn-active { border-bottom: 2px solid #22c55e; color: white; }
+.tab-btn-inactive { border-bottom: 2px solid transparent; color: #666; }
+.tab-btn-inactive:hover { color: #aaa; }
     </style>
 </head>
 <body class="antialiased text-gray-300">
@@ -73,7 +85,7 @@
     <nav class="fixed top-0 w-full z-50 glass-panel border-b-0 h-16 flex items-center justify-between px-6">
         <div class="flex items-center gap-3">
             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-white font-bold tracking-widest uppercase text-xs">Tierra Viva <span class="opacity-50">| V1.0</span></span>
+            <span class="text-white font-bold tracking-widest uppercase text-xs">LandM2 <span class="opacity-50">| V1.0</span></span>
         </div>
         <button class="bg-white/10 hover:bg-white text-white hover:text-black px-4 py-2 rounded-full text-xs font-bold uppercase transition-all">
             Conectar Wallet / Identidad
@@ -93,11 +105,8 @@
     <main class="max-w-[1400px] mx-auto px-4 mb-32 fade-in" style="animation-delay: 0.2s;">
         
         <div class="flex justify-center gap-4 mb-8">
-            <button onclick="setMode('agricola')" id="btn-agri" class="active-mode px-6 py-2 rounded-full border border-green-500/50 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest transition-all">
-                🌱 Producción & Siembra
-            </button>
-            <button onclick="setMode('evento')" id="btn-event" class="px-6 py-2 rounded-full border border-white/10 text-gray-500 hover:text-white text-xs font-bold uppercase tracking-widest transition-all">
-                ⛺ Experiencia & Glamping
+            <button id="mode-indicator" class="px-6 py-2 rounded-full border border-green-500/50 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest cursor-default">
+                Modo Activo: Selección Libre
             </button>
         </div>
 
@@ -105,43 +114,143 @@
             
             <div class="lg:col-span-8 glass-panel p-2 rounded-2xl relative">
                 <div class="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] uppercase text-white font-mono border border-white/10">
-                    📡 Conexión Satelital: Activa
+                    📡 Live Feed: Rancho "El Horizonte"
                 </div>
-                <!-- <div class="land-grid h-[500px]" id="grid-container"></div> -->
+                
                 <div class="land-grid w-full h-auto" id="grid-container"></div>
                 
                 <div class="flex justify-between items-center mt-3 px-2">
-                    <div class="text-[10px] text-gray-500 uppercase font-mono">Rancho "El Horizonte", DGO.</div>
+                    <div class="text-[10px] text-gray-500 uppercase font-mono flex gap-4">
+                        <span>Bloque: 500m²</span>
+                        <span>Total Disponible: 24 Ha</span>
+                    </div>
                     <div class="flex gap-4 text-[10px] uppercase">
                         <span class="flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full"></span> Disponible</span>
-                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-white/20 rounded-full"></span> Ocupado</span>
+                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-white/50 rounded-full"></span> Seleccionado</span>
+                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-white/5 rounded-full border border-white/10"></span> Ocupado</span>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-4 space-y-4">
                 
-                <div class="glass-panel p-6 rounded-2xl min-h-[200px] flex flex-col justify-center transition-all" id="info-panel">
-                    <div class="text-center space-y-2">
-                        <i data-lucide="mouse-pointer-2" class="w-8 h-8 mx-auto text-gray-600 mb-2"></i>
-                        <h3 class="text-white font-bold">Selecciona una parcela</h3>
-                        <p class="text-xs text-gray-500">Haz clic en el mapa para analizar el suelo y ver costos.</p>
+                <div class="glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative" id="info-panel">
+                    <div id="panel-empty" class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10 bg-[#141414]">
+                        <i data-lucide="scan-search" class="w-10 h-10 text-gray-700 mb-3"></i>
+                        <h3 class="text-white font-bold">Sin Selección</h3>
+                        <p class="text-xs text-gray-500 max-w-[200px]">Selecciona una o varias parcelas en el mapa para ver análisis de suelo y contratos.</p>
+                    </div>
+
+                    <div id="panel-content" class="hidden h-full flex flex-col">
+                        <div class="p-6 pb-0 bg-white/5 border-b border-white/5">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-lg font-bold text-white" id="panel-title">Zona A</h3>
+                                    <p class="text-[10px] text-green-400 font-mono mt-1">
+                                        <span id="panel-count">0</span> Parcelas | <span id="panel-area">0</span> m² Totales
+                                    </p>
+                                </div>
+                                <div class="bg-black/40 px-2 py-1 rounded border border-white/10">
+                                    <span class="text-[10px] text-gray-400 font-mono block">CALIDAD</span>
+                                    <span class="text-xs font-bold text-white">AAA+</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-6">
+                                <button onclick="switchTab('resumen')" id="tab-btn-resumen" class="tab-btn-active text-[10px] font-bold uppercase pb-3 transition-colors">Resumen</button>
+                                <button onclick="switchTab('suelo')" id="tab-btn-suelo" class="tab-btn-inactive text-[10px] font-bold uppercase pb-3 transition-colors">Bio-Data</button>
+                                <button onclick="switchTab('legal')" id="tab-btn-legal" class="tab-btn-inactive text-[10px] font-bold uppercase pb-3 transition-colors">Legal</button>
+                            </div>
+                        </div>
+
+                        <div class="p-6 flex-1 bg-[#141414]">
+                            <div id="tab-resumen" class="space-y-4 fade-in">
+                                <p class="text-xs text-gray-400 leading-relaxed" id="panel-desc">Descripción de la zona...</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="bg-white/5 p-2 rounded border border-white/5">
+                                        <span class="text-[9px] text-gray-500 uppercase block">Topografía</span>
+                                        <span class="text-xs text-white">Plana (0-2°)</span>
+                                    </div>
+                                    <div class="bg-white/5 p-2 rounded border border-white/5">
+                                        <span class="text-[9px] text-gray-500 uppercase block">Acceso</span>
+                                        <span class="text-xs text-white">Carretera 50m</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tab-suelo" class="hidden space-y-4 fade-in">
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                                            <span>Nitrógeno (N)</span> <span>Alto</span>
+                                        </div>
+                                        <div class="w-full bg-gray-800 h-1 rounded-full"><div class="bg-green-500 h-1 rounded-full w-[80%]"></div></div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                                            <span>Materia Orgánica</span> <span>5.2%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-800 h-1 rounded-full"><div class="bg-green-500 h-1 rounded-full w-[65%]"></div></div>
+                                    </div>
+                                    <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded text-[10px] text-yellow-200 mt-2">
+                                        ⚠ Historial: Cultivo de maíz en 2023. Suelo descansado 6 meses.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tab-legal" class="hidden space-y-3 fade-in">
+                                <ul class="space-y-2">
+                                    <li class="flex gap-2 text-[10px] text-gray-400">
+                                        <i data-lucide="file-check" class="w-3 h-3 text-green-500 shrink-0"></i>
+                                        Uso de suelo: Mixto (Agro/Turístico)
+                                    </li>
+                                    <li class="flex gap-2 text-[10px] text-gray-400">
+                                        <i data-lucide="shield" class="w-3 h-3 text-green-500 shrink-0"></i>
+                                        Seguro de Daños: Requerido (Incluido)
+                                    </li>
+                                    <li class="flex gap-2 text-[10px] text-gray-400">
+                                        <i data-lucide="lock" class="w-3 h-3 text-green-500 shrink-0"></i>
+                                        Tipo Contrato: Comodato Digital
+                                    </li>
+                                </ul>
+                                <button class="w-full mt-2 py-1.5 border border-white/10 rounded text-[10px] text-white hover:bg-white/10 transition-colors">
+                                    Descargar Borrador PDF
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="glass-panel p-6 rounded-2xl">
-                    <div class="flex justify-between mb-4">
+                    <div class="flex justify-between mb-2">
                         <span class="text-xs font-bold uppercase text-white">Duración del Contrato</span>
-                        <span class="text-xs font-mono text-green-400" id="time-display">1 Ciclo</span>
+                        <span class="text-[10px] font-mono text-green-400" id="discount-badge">Tarifa Estándar</span>
                     </div>
-                    <input type="range" min="1" max="10" value="1" id="time-slider">
-                    <p class="text-[10px] text-gray-500 mt-2 text-right" id="time-context">Descuento aplicado por largo plazo: 0%</p>
+                    
+                    <div class="flex gap-3 mb-2">
+                        <div class="flex-1 bg-black/40 rounded-lg border border-white/10 flex items-center px-3">
+                            <input type="number" id="duration-val" value="1" min="1" class="w-full bg-transparent text-white font-mono font-bold outline-none text-sm py-2" oninput="updateTimeContext()">
+                        </div>
+                        <div class="w-1/2 relative">
+                            <select id="duration-unit" class="w-full h-full bg-black/40 text-white text-xs font-bold uppercase px-3 rounded-lg border border-white/10 outline-none appearance-none cursor-pointer" onchange="updateTimeContext()">
+                                <option value="h">Horas</option>
+                                <option value="d">Días</option>
+                                <option value="m">Meses</option>
+                                <option value="y">Años</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-gray-500"></i>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-gray-500 text-right">Mínimo 1 hora - Máximo 10 años</p>
                 </div>
 
                 <div class="glass-panel p-6 rounded-2xl bg-gradient-to-br from-gray-900 to-black border-t-2 border-t-green-500/50">
-                    <div class="flex justify-between items-center mb-2">
+                    <div class="flex justify-between items-center mb-1">
                         <span class="text-gray-400 text-xs uppercase">Inversión Total</span>
-                        <span class="text-3xl font-bold text-white tracking-tight">$<span id="price-display">0</span></span>
+                        <div class="text-right">
+                            <span class="text-3xl font-bold text-white tracking-tight">$<span id="price-display">0</span></span>
+                            <span class="text-[10px] text-gray-500 block">USD (Estimado)</span>
+                        </div>
                     </div>
                     <div class="h-px bg-white/10 my-4"></div>
                     <button class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200 transition-all text-xs uppercase tracking-widest flex items-center justify-center gap-2">
@@ -465,7 +574,7 @@
         <p class="text-xs font-bold text-green-500 uppercase tracking-[0.3em] mb-4">Arquitectura de Continuidad</p>
         <h4 class="text-2xl font-bold text-white mb-8">La tierra espera tu visión.</h4>
         <div class="flex justify-center gap-6 text-xs text-gray-500 font-mono">
-            <span>INDEXADO: VERCEL</span>
+            <span>INDEXADO: AWS/EC2</span>
             <span>SEGURIDAD: SSL/TLS</span>
             <span>DATA: OPEN SOIL API</span>
         </div>
@@ -543,30 +652,55 @@
 
         // --- DATOS DEL ARCHIVO TEXTO ---
         const zones = {
-            'A': { name: 'Zona Volcánica Alta', bio: 'Suelo rico en potasio. Ideal café/cacao.', color: 'border-l-red-500', price: 1.5, type: 'agri' },
-            'B': { name: 'Valle de Arcilla', bio: 'Retención de agua alta. Pastoreo/Maíz.', color: 'border-l-yellow-500', price: 1.0, type: 'agri' },
-            'C': { name: 'Bosque de Niebla', bio: 'Ecosistema protegido. Solo ecoturismo.', color: 'border-l-green-500', price: 2.0, type: 'event' }
+            'A': { 
+                name: 'Zona Volcánica Alta', 
+                desc: 'Suelo poroso rico en minerales volcánicos. Drenaje excelente.',
+                color: 'border-l-red-500', 
+                basePrice: 0.5 // USD por hora por parcela
+            },
+            'B': { 
+                name: 'Valle de Arcilla', 
+                desc: 'Alta retención hídrica. Ideal para cultivos de raíz profunda.',
+                color: 'border-l-yellow-500', 
+                basePrice: 0.3 
+            },
+            'C': { 
+                name: 'Bosque de Niebla', 
+                desc: 'Área de conservación con permisos para ecoturismo de bajo impacto.',
+                color: 'border-l-green-500', 
+                basePrice: 0.8 
+            }
         };
 
         let state = {
-            mode: 'agricola', // agricola | evento
-            time: 1,
-            selected: []
+            selected: [], // Array de IDs
+            lastZoneType: null // Para mantener referencia del tipo de zona
         };
 
-        // --- RENDER DEL GRID ---
+        // --- INICIALIZACIÓN DEL GRID ---
         const grid = document.getElementById('grid-container');
+        
+        // Generar 64 parcelas
         for(let i=0; i<64; i++) {
             const div = document.createElement('div');
-            div.className = 'plot';
-            // Simular distribución geográfica
-            let z = 'B';
-            if(i < 16) z = 'A'; // Montaña
-            if(i > 48) z = 'C'; // Bosque
             
-            div.dataset.zone = z;
+            // Definir zona geográfica simulada
+            let zKey = 'B';
+            if(i < 16) zKey = 'A'; // Montaña
+            if(i > 48) zKey = 'C'; // Bosque
+
+            // Simular ocupación aleatoria (20% de probabilidad)
+            const isOccupied = Math.random() < 0.2;
+
+            div.className = `plot ${isOccupied ? 'occupied' : ''}`;
+            div.dataset.zone = zKey;
             div.dataset.id = i;
-            div.onclick = () => togglePlot(div, z);
+            
+            // Solo agregar evento click si no está ocupado
+            if(!isOccupied) {
+                div.onclick = () => togglePlot(div, zKey);
+            }
+            
             grid.appendChild(div);
         }
 
@@ -592,25 +726,125 @@
             updateInfoPanel(null);
         }
 
+        // --- LÓGICA DE SELECCIÓN ---
         function togglePlot(div, zoneKey) {
-            const zone = zones[zoneKey];
+            const id = div.dataset.id;
             
-            // Check compatibilidad simple
-            if(state.mode === 'agricola' && zone.type === 'event') {
-                alert("Zona restringida para agricultura (Área Protegida).");
+            if(div.classList.contains('selected')) {
+                // Deseleccionar
+                div.classList.remove('selected');
+                state.selected = state.selected.filter(x => x !== id);
+            } else {
+                // Seleccionar
+                div.classList.add('selected');
+                state.selected.push(id);
+                // Guardamos la última zona tocada para mostrar info de ese tipo
+                state.lastZoneType = zoneKey;
+            }
+
+            updateUI();
+        }
+
+        // --- ACTUALIZACIÓN DE UI (Panel y Precios) ---
+        function updateUI() {
+            const panelEmpty = document.getElementById('panel-empty');
+            const panelContent = document.getElementById('panel-content');
+            const panelInfo = document.getElementById('info-panel');
+
+            // 1. Manejo del Panel de Info
+            if (state.selected.length === 0) {
+                panelEmpty.classList.remove('hidden');
+                panelContent.classList.add('hidden');
+                panelInfo.classList.remove('border-l-red-500', 'border-l-yellow-500', 'border-l-green-500', 'border-l-4');
+            } else {
+                panelEmpty.classList.add('hidden');
+                panelContent.classList.remove('hidden');
+
+                // Usamos datos de la última zona seleccionada para el contexto
+                const zoneData = zones[state.lastZoneType];
+                
+                // Actualizar Textos
+                document.getElementById('panel-title').innerText = zoneData.name;
+                document.getElementById('panel-desc').innerText = zoneData.desc;
+                document.getElementById('panel-count').innerText = state.selected.length;
+                
+                // Calculo de M2 (Asumiendo 500m2 por parcela)
+                const totalM2 = state.selected.length * 500;
+                document.getElementById('panel-area').innerText = totalM2.toLocaleString();
+
+                // Estilo del borde del panel
+                panelInfo.className = `glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative border-l-4 ${zoneData.color}`;
+            }
+
+            // 2. Calcular Precio
+            calculatePrice();
+        }
+
+        // --- LÓGICA DE TIEMPO Y PRECIO ---
+        function updateTimeContext() {
+            calculatePrice();
+        }
+
+        function calculatePrice() {
+            if(state.selected.length === 0) {
+                document.getElementById('price-display').innerText = "0";
                 return;
             }
 
-            if(div.classList.contains('selected')) {
-                div.classList.remove('selected');
-                state.selected = state.selected.filter(id => id !== div.dataset.id);
-                if(state.selected.length === 0) updateInfoPanel(null);
+            // Obtener valores de tiempo
+            const val = parseFloat(document.getElementById('duration-val').value) || 0;
+            const unit = document.getElementById('duration-unit').value;
+            
+            // Factores de conversión a HORAS (unidad base)
+            const factors = {
+                'h': 1,
+                'd': 24,
+                'm': 720, // 30 días
+                'y': 8760 // 365 días
+            };
+
+            const totalHours = val * factors[unit];
+            
+            // Precio Base promedio de las zonas seleccionadas (simplificado: usa la última zona)
+            // En un sistema real promediaríamos el costo de cada parcela individual
+            const zonePricePerHour = zones[state.lastZoneType].basePrice; 
+            
+            let total = zonePricePerHour * state.selected.length * totalHours;
+
+            // Lógica de Descuentos
+            const badge = document.getElementById('discount-badge');
+            if(totalHours >= 720) { // +1 Mes
+                total = total * 0.8; // 20% descuento
+                badge.innerText = "Descuento Larga Estancia (20%)";
+                badge.className = "text-[10px] font-mono text-green-400";
+            } else if (totalHours >= 24) {
+                total = total * 0.95; // 5% descuento
+                badge.innerText = "Descuento Diario (5%)";
+                badge.className = "text-[10px] font-mono text-blue-400";
             } else {
-                div.classList.add('selected');
-                state.selected.push(div.dataset.id);
-                updateInfoPanel(zone);
+                badge.innerText = "Tarifa Estándar";
+                badge.className = "text-[10px] font-mono text-gray-400";
             }
-            calcTotal();
+
+            document.getElementById('price-display').innerText = Math.round(total).toLocaleString();
+        }
+
+        // --- LÓGICA DE TABS ---
+        function switchTab(tabName) {
+            // 1. Ocultar todos los contenidos
+            ['resumen', 'suelo', 'legal'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                // Reset botones
+                const btn = document.getElementById(`tab-btn-${t}`);
+                btn.classList.remove('tab-btn-active');
+                btn.classList.add('tab-btn-inactive');
+            });
+
+            // 2. Mostrar seleccionado
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            activeBtn.classList.remove('tab-btn-inactive');
+            activeBtn.classList.add('tab-btn-active');
         }
 
         function updateInfoPanel(zone) {
