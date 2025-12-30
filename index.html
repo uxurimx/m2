@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landm2 | Acceso Descentralizado</title>
+    <title>Landm2 | Tu Tierra, Tus Reglas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* --- ESTÉTICA CORE --- */
+        /* --- ESTÉTICA CORE (INTACTA) --- */
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: #050505; 
@@ -67,17 +67,28 @@
         .tab-active { background: #fff; color: #000; }
         .tab-inactive { background: transparent; color: #666; }
 
-        /* Agrega esto a tus estilos existentes */
-.plot.occupied {
-    background: rgba(255, 255, 255, 0.05); /* Gris oscuro */
-    border: 1px solid rgba(255, 255, 255, 0.02);
-    cursor: not-allowed;
-    pointer-events: none; /* No clickable */
-}
-/* Estilo para pestañas del panel */
-.tab-btn-active { border-bottom: 2px solid #22c55e; color: white; }
-.tab-btn-inactive { border-bottom: 2px solid transparent; color: #666; }
-.tab-btn-inactive:hover { color: #aaa; }
+        .plot.occupied {
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            cursor: not-allowed;
+            pointer-events: none; 
+        }
+        .tab-btn-active { border-bottom: 2px solid #22c55e; color: white; }
+        .tab-btn-inactive { border-bottom: 2px solid transparent; color: #666; }
+        .tab-btn-inactive:hover { color: #aaa; }
+
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .gradient-text { background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* ESTILOS ESPECÍFICOS PARA EL CTA DEL DEMO */
+        .demo-card {
+            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.1) 0%, rgba(0,0,0,0) 70%);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
     </style>
 </head>
 <body class="antialiased text-gray-300">
@@ -85,194 +96,174 @@
     <nav class="fixed top-0 w-full z-50 glass-panel border-b-0 h-16 flex items-center justify-between px-6">
         <div class="flex items-center gap-3">
             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-white font-bold tracking-widest uppercase text-xs">LandM2 <span class="opacity-50">| V1.0</span></span>
+            <span class="text-white font-bold tracking-widest uppercase text-xs">LandM2 <span class="opacity-50">| Beta</span></span>
         </div>
         <button class="bg-white/10 hover:bg-white text-white hover:text-black px-4 py-2 rounded-full text-xs font-bold uppercase transition-all">
-            Conectar Wallet
+            Conectar
         </button>
     </nav>
 
     <header class="pt-32 pb-16 px-4 text-center max-w-4xl mx-auto fade-in">
         <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tighter text-white">
-            El sistema operativo <br><span class="gradient-text">del suelo físico.</span>
+            Tu pedazo de tierra, <br><span class="gradient-text">sin ataduras.</span>
         </h1>
-        <p class="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            Desbloquea el valor atrapado de la tierra. Renta por m², por horas o por ciclos agrícolas. 
-            <span class="text-white">Sin comprar. Sin vender. Solo acceso puro.</span>
+        <p class="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed mb-8">
+            Úsala para sembrar, para descansar o para tu negocio. Renta solo los metros que necesitas, por el tiempo que quieras.
+            <span class="text-white">Sin comprarla, sin venderla. Puro uso.</span>
         </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-red-500 relative group hover:-translate-y-1 transition-transform">
+                    <div class="absolute -top-3 left-6 bg-red-500 text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase">El Problema</div>
+                    <h3 class="text-white font-bold text-lg mb-2 mt-2">La Barrera del Dinero</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        "¿Quieres sembrar? Compra 10 hectáreas." <br>
+                        El banco te pide avales, enganches millonarios y te endeudas por 20 años solo para empezar.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-green-500 relative group hover:-translate-y-1 transition-transform bg-white/5">
+                    <div class="absolute -top-3 left-6 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase">La Solución</div>
+                    <h3 class="text-white font-bold text-lg mb-2 mt-2">Micro-Renta Inteligente</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        No compres el pastel, compra la rebanada. <br>
+                        Renta solo los 50m² que necesitas, por 12 horas o 12 meses. Paga $50 USD en vez de $5 Millones. Sin deuda.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-blue-500 relative group hover:-translate-y-1 transition-transform">
+                    <div class="absolute -top-3 left-6 bg-blue-500 text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase">La Facilidad</div>
+                    <h3 class="text-white font-bold text-lg mb-2 mt-2">Entras HOY Mismo</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Olvídate del Notario y la burocracia. <br>
+                        Eliges en el mapa, pagas con tu cel y recibes el código de la puerta. Tan fácil como pedir un Uber.
+                    </p>
+                </div>
+
+            </div>
     </header>
 
-    <main class="max-w-[1400px] mx-auto px-4 mb-32 fade-in" style="animation-delay: 0.2s;">
+    <section class="max-w-6xl mx-auto px-4 mb-32 fade-in" style="animation-delay: 0.2s;">
+        <div class="demo-card glass-panel p-8 rounded-3xl text-center relative overflow-hidden group cursor-pointer" onclick="window.location.href='demo.html'">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80')] opacity-20 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"></div>
+            <div class="relative z-10">
+                <i data-lucide="map" class="w-12 h-12 text-green-400 mx-auto mb-4"></i>
+                <h2 class="text-2xl font-bold text-white mb-2">Explora el Rancho Digital</h2>
+                <p class="text-gray-400 text-sm max-w-md mx-auto mb-6">
+                    Hemos creado un mapa interactivo para que veas lo fácil que es elegir tu terreno. Toca los cuadros, revisa el suelo y calcula el precio en tiempo real.
+                </p>
+                <span class="text-green-400 text-xs font-bold uppercase tracking-widest border-b border-green-500 pb-1">Click para iniciar demo</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-4 py-5 relative fade-in" style="animation-delay: 0.1s;">
         
-        <div class="flex justify-center gap-4 mb-8">
-            <button id="mode-indicator" class="px-6 py-2 rounded-full border border-green-500/50 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest cursor-default">
-                Modo Activo: Selección Libre
-            </button>
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">El problema real</h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                Hoy en día, la tierra es un activo <span class="text-red-400 font-bold">lento, caro y difícil</span>.
+                <br>Creamos un puente para cruzar ese muro.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
             
-            <div class="lg:col-span-8 glass-panel p-2 rounded-2xl relative">
-                <div class="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] uppercase text-white font-mono border border-white/10">
-                    📡 Live Feed: Rancho "El Horizonte"
+            <div class="glass-panel p-8 rounded-3xl border-l-4 border-l-red-500/50 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <i data-lucide="lock" class="w-24 h-24 text-red-500"></i>
                 </div>
                 
-                <div class="land-grid w-full h-auto" id="grid-container"></div>
-                
-                <div class="flex justify-between items-center mt-3 px-2">
-                    <div class="text-[10px] text-gray-500 uppercase font-mono flex gap-4">
-                        <span>Bloque: 500m²</span>
-                        <span>Total Disponible: 24 Ha</span>
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span class="bg-red-500/20 text-red-400 p-2 rounded-lg"><i data-lucide="x-circle" class="w-6 h-6"></i></span>
+                    La Vieja Escuela
+                </h3>
+
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-200 mb-2">Para el Dueño de Tierra:</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            "Tengo hectáreas ahí paradas. Solo me generan gastos (predial, limpieza, vigilancia). Vender es un proceso de años y me da miedo que se metan paracaidistas si la dejo sola."
+                        </p>
+                        <div class="mt-3 flex gap-2">
+                            <span class="text-[10px] bg-red-900/30 text-red-400 px-2 py-1 rounded border border-red-500/20">Sin Liquidez</span>
+                            <span class="text-[10px] bg-red-900/30 text-red-400 px-2 py-1 rounded border border-red-500/20">Gastos Fijos</span>
+                        </div>
                     </div>
-                    <div class="flex gap-4 text-[10px] uppercase">
-                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full"></span> Disponible</span>
-                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-white/50 rounded-full"></span> Seleccionado</span>
-                        <!-- <span class="flex items-center gap-2"><span class="w-2 h-2 bg-white/5 rounded-full border border-white/10"></span> Ocupado</span> -->
+
+                    <div class="h-px bg-white/10 w-full"></div>
+
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-200 mb-2">Para el que quiere Emprender:</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            "Quiero poner un glamping o sembrar, pero el banco no me presta 5 millones para comprar el terreno. Rentar me pide avales, fianzas y contratos de 5 años. Es imposible empezar."
+                        </p>
+                        <div class="mt-3 flex gap-2">
+                            <span class="text-[10px] bg-red-900/30 text-red-400 px-2 py-1 rounded border border-red-500/20">Barrera Alta</span>
+                            <span class="text-[10px] bg-red-900/30 text-red-400 px-2 py-1 rounded border border-red-500/20">Riesgo Total</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-4 space-y-4">
-                
-                <div class="glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative" id="info-panel">
-                    <div id="panel-empty" class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10 bg-[#141414]">
-                        <i data-lucide="scan-search" class="w-10 h-10 text-gray-700 mb-3"></i>
-                        <h3 class="text-white font-bold">Sin Selección</h3>
-                        <p class="text-xs text-gray-500 max-w-[200px]">Selecciona una o varias parcelas en el mapa para ver análisis de suelo y contratos.</p>
-                    </div>
-
-                    <div id="panel-content" class="hidden h-full flex flex-col">
-                        <div class="p-6 pb-0 bg-white/5 border-b border-white/5">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 class="text-lg font-bold text-white" id="panel-title">Zona A</h3>
-                                    <p class="text-[10px] text-green-400 font-mono mt-1">
-                                        <span id="panel-count">0</span> Parcelas | <span id="panel-area">0</span> m² Totales
-                                    </p>
-                                </div>
-                                <div class="bg-black/40 px-2 py-1 rounded border border-white/10">
-                                    <span class="text-[10px] text-gray-400 font-mono block">CALIDAD</span>
-                                    <span class="text-xs font-bold text-white">AAA+</span>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-6">
-                                <button onclick="switchTab('resumen')" id="tab-btn-resumen" class="tab-btn-active text-[10px] font-bold uppercase pb-3 transition-colors">Resumen</button>
-                                <button onclick="switchTab('suelo')" id="tab-btn-suelo" class="tab-btn-inactive text-[10px] font-bold uppercase pb-3 transition-colors">Bio-Data</button>
-                                <button onclick="switchTab('legal')" id="tab-btn-legal" class="tab-btn-inactive text-[10px] font-bold uppercase pb-3 transition-colors">Legal</button>
-                            </div>
-                        </div>
-
-                        <div class="p-6 flex-1 bg-[#141414]">
-                            <div id="tab-resumen" class="space-y-4 fade-in">
-                                <p class="text-xs text-gray-400 leading-relaxed" id="panel-desc">Descripción de la zona...</p>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div class="bg-white/5 p-2 rounded border border-white/5">
-                                        <span class="text-[9px] text-gray-500 uppercase block">Topografía</span>
-                                        <span class="text-xs text-white">Plana (0-2°)</span>
-                                    </div>
-                                    <div class="bg-white/5 p-2 rounded border border-white/5">
-                                        <span class="text-[9px] text-gray-500 uppercase block">Acceso</span>
-                                        <span class="text-xs text-white">Carretera 50m</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="tab-suelo" class="hidden space-y-4 fade-in">
-                                <div class="space-y-3">
-                                    <div>
-                                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-                                            <span>Nitrógeno (N)</span> <span>Alto</span>
-                                        </div>
-                                        <div class="w-full bg-gray-800 h-1 rounded-full"><div class="bg-green-500 h-1 rounded-full w-[80%]"></div></div>
-                                    </div>
-                                    <div>
-                                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-                                            <span>Materia Orgánica</span> <span>5.2%</span>
-                                        </div>
-                                        <div class="w-full bg-gray-800 h-1 rounded-full"><div class="bg-green-500 h-1 rounded-full w-[65%]"></div></div>
-                                    </div>
-                                    <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded text-[10px] text-yellow-200 mt-2">
-                                        ⚠ Historial: Cultivo de maíz en 2023. Suelo descansado 6 meses.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="tab-legal" class="hidden space-y-3 fade-in">
-                                <ul class="space-y-2">
-                                    <li class="flex gap-2 text-[10px] text-gray-400">
-                                        <i data-lucide="file-check" class="w-3 h-3 text-green-500 shrink-0"></i>
-                                        Uso de suelo: Mixto (Agro/Turístico)
-                                    </li>
-                                    <li class="flex gap-2 text-[10px] text-gray-400">
-                                        <i data-lucide="shield" class="w-3 h-3 text-green-500 shrink-0"></i>
-                                        Seguro de Daños: Requerido (Incluido)
-                                    </li>
-                                    <li class="flex gap-2 text-[10px] text-gray-400">
-                                        <i data-lucide="lock" class="w-3 h-3 text-green-500 shrink-0"></i>
-                                        Tipo Contrato: Comodato Digital
-                                    </li>
-                                </ul>
-                                <button class="w-full mt-2 py-1.5 border border-white/10 rounded text-[10px] text-white hover:bg-white/10 transition-colors">
-                                    Descargar Borrador PDF
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            <div class="glass-panel p-8 rounded-3xl border-l-4 border-l-green-500/50 relative overflow-hidden group bg-gradient-to-br from-green-900/10 to-transparent">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <i data-lucide="unlock" class="w-24 h-24 text-green-500"></i>
                 </div>
 
-                <div class="glass-panel p-6 rounded-2xl">
-                    <div class="flex justify-between mb-2">
-                        <span class="text-xs font-bold uppercase text-white">Duración del Contrato</span>
-                        <span class="text-[10px] font-mono text-green-400" id="discount-badge">Tarifa Estándar</span>
-                    </div>
-                    
-                    <div class="flex gap-3 mb-2">
-                        <div class="flex-1 bg-black/40 rounded-lg border border-white/10 flex items-center px-3">
-                            <input type="number" id="duration-val" value="1" min="1" class="w-full bg-transparent text-white font-mono font-bold outline-none text-sm py-2" oninput="updateTimeContext()">
-                        </div>
-                        <div class="w-1/2 relative">
-                            <select id="duration-unit" class="w-full h-full bg-black/40 text-white text-xs font-bold uppercase px-3 rounded-lg border border-white/10 outline-none appearance-none cursor-pointer" onchange="updateTimeContext()">
-                                <option value="h">Horas</option>
-                                <option value="d">Días</option>
-                                <option value="m">Meses</option>
-                                <option value="y">Años</option>
-                            </select>
-                            <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none text-gray-500"></i>
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-gray-500 text-right">Mínimo 1 hora - Máximo 10 años</p>
-                </div>
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span class="bg-green-500/20 text-green-400 p-2 rounded-lg"><i data-lucide="check-circle-2" class="w-6 h-6"></i></span>
+                    El Método Landm2
+                </h3>
 
-                <div class="glass-panel p-6 rounded-2xl bg-gradient-to-br from-gray-900 to-black border-t-2 border-t-green-500/50">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-gray-400 text-xs uppercase">Inversión Total</span>
-                        <div class="text-right">
-                            <span class="text-3xl font-bold text-white tracking-tight">$<span id="price-display">0</span></span>
-                            <span class="text-[10px] text-gray-500 block">USD (Estimado)</span>
-                        </div>
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-2">Libertad para el Dueño:</h4>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            Convierte tu tierra pasiva en una máquina de dinero. Renta solo una parte, por el tiempo que quieras, sin vender ni un metro cuadrado. Todo protegido con tecnología.
+                        </p>
+                        <ul class="mt-3 space-y-1">
+                            <li class="flex items-center gap-2 text-xs text-green-400"><i data-lucide="check" class="w-3 h-3"></i> Dinero inmediato en tu cuenta.</li>
+                            <li class="flex items-center gap-2 text-xs text-green-400"><i data-lucide="check" class="w-3 h-3"></i> Tu tierra aumenta de valor (plusvalía).</li>
+                        </ul>
                     </div>
-                    <div class="h-px bg-white/10 my-4"></div>
-                    <button class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200 transition-all text-xs uppercase tracking-widest flex items-center justify-center gap-2">
-                        <span>Iniciar Smart Contract</span>
-                        <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </button>
-                    <p class="text-[9px] text-center text-gray-600 mt-2">Blockchain Timestamping incluido.</p>
+
+                    <div class="h-px bg-green-500/20 w-full"></div>
+
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-2">Acceso para el Soñador:</h4>
+                        <p class="text-sm text-gray-300 leading-relaxed">
+                            Accede a tierras premium como si contrataras Netflix. Paga solo por el uso. Haz tu prueba de concepto hoy mismo con poco dinero y escala después.
+                        </p>
+                        <ul class="mt-3 space-y-1">
+                            <li class="flex items-center gap-2 text-xs text-green-400"><i data-lucide="check" class="w-3 h-3"></i> Sin deudas bancarias.</li>
+                            <li class="flex items-center gap-2 text-xs text-green-400"><i data-lucide="check" class="w-3 h-3"></i> Empieza con $50 dólares, no con millones.</li>
+                        </ul>
+                    </div>
                 </div>
+            </div>
+
+        </div>
+
+        <div class="hidden md:flex justify-center -mt-6 relative z-10">
+            <div class="bg-black border border-gray-700 p-3 rounded-full shadow-xl shadow-green-500/20">
+                <i data-lucide="arrow-right-left" class="text-green-500 w-6 h-6 animate-pulse"></i>
             </div>
         </div>
-    </main>
+        
+    </section>
 
     <section class="max-w-5xl mx-auto px-4 mb-32">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-white mb-6">¿Quién eres en esta ecuación?</h2>
+            <h2 class="text-3xl font-bold text-white mb-6">¿Tú quién eres?</h2>
             
             <div class="inline-flex bg-white/5 p-1 rounded-full border border-white/10 relative">
                 <button onclick="togglePersona('owner')" id="tab-owner" class="px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all tab-inactive">
-                    Soy Dueño de Tierra
+                    Tengo Tierra (Soy Dueño)
                 </button>
                 <button onclick="togglePersona('user')" id="tab-user" class="px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all tab-active shadow-lg">
-                    Soy Emprendedor / Usuario
+                    Busco Tierra (Soy Usuario)
                 </button>
             </div>
         </div>
@@ -280,142 +271,180 @@
         <div id="content-user" class="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in">
             <div class="p-6 border-l border-white/10 hover:border-green-500 transition-colors">
                 <i data-lucide="unlock" class="text-green-400 mb-4"></i>
-                <h3 class="text-xl font-bold text-white mb-2">Acceso sin Deuda</h3>
+                <h3 class="text-xl font-bold text-white mb-2">Úsala sin comprarla</h3>
                 <p class="text-sm text-gray-400 leading-relaxed">
-                    Olvídate de hipotecas o créditos millonarios. Accede a tierras premium pagando solo por el tiempo y espacio que necesitas. Es como el "Cloud Computing" pero físico.
+                    Olvídate de pedir prestado al banco o endeudarte por años. Paga solo por el pedacito que usas y el tiempo que lo necesitas.
                 </p>
             </div>
             <div class="p-6 border-l border-white/10 hover:border-green-500 transition-colors">
                 <i data-lucide="sprout" class="text-green-400 mb-4"></i>
-                <h3 class="text-xl font-bold text-white mb-2">Validación Rápida</h3>
+                <h3 class="text-xl font-bold text-white mb-2">Prueba rápido</h3>
                 <p class="text-sm text-gray-400 leading-relaxed">
-                    ¿Quieres probar un cultivo de berries o un glamping de fin de semana? Haz un MVP (Producto Mínimo Viable) en 3 meses, no te cases con la tierra por 30 años.
+                    ¿Quieres ver si se dan los arándanos o poner una cabaña el fin de semana? Haz la prueba por 3 meses. Si no jala, te vas sin problemas.
                 </p>
             </div>
             <div class="p-6 border-l border-white/10 hover:border-green-500 transition-colors">
                 <i data-lucide="globe" class="text-green-400 mb-4"></i>
-                <h3 class="text-xl font-bold text-white mb-2">Catálogo Global</h3>
+                <h3 class="text-xl font-bold text-white mb-2">Encuentra lo que buscas</h3>
                 <p class="text-sm text-gray-400 leading-relaxed">
-                    Filtra por pH del suelo, altura, clima y ubicación. Encuentra exactamente el hardware biológico que tu proyecto necesita para triunfar.
+                    Busca tierras por tipo de suelo, clima o altura. Encuentra el lugar exacto para que tu proyecto triunfe.
                 </p>
             </div>
+
+            <section class="max-w-6xl mx-auto px-4 py-24 relative border-t border-white/5">
+    
+    <div class="text-center mb-16 relative z-10">
+        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Para ti, que buscas tierra</h2>
+        <p class="text-sm text-gray-500 max-w-2xl mx-auto">
+            Olvídate de las citas interminables y el papeleo.
+            <span class="text-green-400">Consigue tu espacio en 4 clics.</span>
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        <div class="relative order-2 lg:order-1">
+            <div class="glass-panel rounded-2xl p-1 border border-white/10 relative overflow-hidden">
+                <div class="bg-black/50 px-4 py-3 flex items-center justify-between border-b border-white/5">
+                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest" id="u-console-status">Sistema: LISTO</span>
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-blue-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-purple-500/50"></div>
+                    </div>
+                </div>
+
+                <div class="p-8 min-h-[300px] flex flex-col justify-center bg-[#0a0a0a]">
+                    
+                    <div id="u-content-1" class="u-process-content fade-in">
+                        <span class="text-blue-400 font-mono text-xs mb-2 block">> FILTRANDO RESULTADOS...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Explora el Catálogo</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                            No pierdas tiempo visitando 20 ranchos. Abre el mapa y filtra exactamente lo que buscas: ¿Mucha agua? ¿Sombra? ¿Tierra negra? ¿Cerca de la carretera?
+                        </p>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-1 rounded border border-blue-500/20">Filtros Avanzados</span>
+                            <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-1 rounded border border-blue-500/20">Vista 3D</span>
+                        </div>
+                    </div>
+
+                    <div id="u-content-2" class="u-process-content hidden fade-in">
+                        <span class="text-green-400 font-mono text-xs mb-2 block">> CONFIGURANDO LOTE...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Elige tu Pedazo</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                            No tienes que rentar todo el rancho. Selecciona solo los cuadros que necesitas (500m²) y decide el tiempo exacto: ¿3 días para acampar o 6 meses para sembrar? Tú mandas.
+                        </p>
+                        <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&q=80" class="w-full h-24 object-cover rounded opacity-50 grayscale hover:grayscale-0 transition-all">
+                    </div>
+
+                    <div id="u-content-3" class="u-process-content hidden fade-in">
+                        <span class="text-purple-400 font-mono text-xs mb-2 block">> GENERANDO ACUERDO...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Reserva Segura</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                            Nada de "nos vemos para firmar". El contrato digital se crea al instante. Pagas con tarjeta o transferencia y tu dinero se protege hasta que confirmas que la tierra existe.
+                        </p>
+                        <div class="bg-purple-900/10 border border-purple-500/20 p-3 rounded text-[10px] font-mono text-purple-300">
+                            Estado: Protección de Compra Activa <br> Garantía: Reembolso si no cumple
+                        </div>
+                    </div>
+
+                    <div id="u-content-4" class="u-process-content hidden fade-in">
+                        <span class="text-yellow-400 font-mono text-xs mb-2 block">> DESBLOQUEANDO ACCESO...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Llega y Úsala</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                            Recibes en tu celular la ubicación GPS exacta y el código digital para abrir la puerta. Sin llaves físicas, sin esperar al velador. Llegas, abres y empiezas tu proyecto.
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-xs text-gray-300 font-mono"><i data-lucide="map-pin" class="w-3 h-3 text-yellow-500"></i> Ruta enviada a Waze/Maps.</li>
+                            <li class="flex items-center gap-2 text-xs text-gray-300 font-mono"><i data-lucide="key" class="w-3 h-3 text-yellow-500"></i> Acceso 24/7 habilitado.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="absolute -left-4 -bottom-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -z-10"></div>
+        </div>
+
+        <div class="space-y-4 relative order-1 lg:order-2">
+            <div class="absolute left-[27px] top-8 bottom-8 w-0.5 bg-gray-800 -z-10"></div>
+
+            <div onclick="setUserProcess(1)" id="u-step-1" class="u-process-step flex items-center gap-6 p-4 rounded-xl cursor-pointer border border-transparent hover:bg-white/5 transition-all group active-step-u">
+                <div class="w-14 h-14 rounded-full bg-black border border-gray-700 flex items-center justify-center relative z-10 group-hover:border-blue-500 transition-colors shadow-lg">
+                    <i data-lucide="search" class="text-gray-400 group-hover:text-blue-400 w-6 h-6 transition-colors"></i>
+                    <div class="absolute inset-0 bg-blue-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg">1. Encuentra</h3>
+                    <p class="text-xs text-gray-500">Busca por clima, suelo o ubicación</p>
+                </div>
+            </div>
+
+            <div onclick="setUserProcess(2)" id="u-step-2" class="u-process-step flex items-center gap-6 p-4 rounded-xl cursor-pointer border border-transparent hover:bg-white/5 transition-all group">
+                <div class="w-14 h-14 rounded-full bg-black border border-gray-700 flex items-center justify-center relative z-10 group-hover:border-green-500 transition-colors shadow-lg">
+                    <i data-lucide="sliders" class="text-gray-400 group-hover:text-green-400 w-6 h-6 transition-colors"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg">2. Personaliza</h3>
+                    <p class="text-xs text-gray-500">Elige tamaño y duración exacta</p>
+                </div>
+            </div>
+
+            <div onclick="setUserProcess(3)" id="u-step-3" class="u-process-step flex items-center gap-6 p-4 rounded-xl cursor-pointer border border-transparent hover:bg-white/5 transition-all group">
+                <div class="w-14 h-14 rounded-full bg-black border border-gray-700 flex items-center justify-center relative z-10 group-hover:border-purple-500 transition-colors shadow-lg">
+                    <i data-lucide="file-check" class="text-gray-400 group-hover:text-purple-400 w-6 h-6 transition-colors"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg">3. Reserva</h3>
+                    <p class="text-xs text-gray-500">Pago seguro y contrato automático</p>
+                </div>
+            </div>
+
+            <div onclick="setUserProcess(4)" id="u-step-4" class="u-process-step flex items-center gap-6 p-4 rounded-xl cursor-pointer border border-transparent hover:bg-white/5 transition-all group">
+                <div class="w-14 h-14 rounded-full bg-black border border-gray-700 flex items-center justify-center relative z-10 group-hover:border-yellow-500 transition-colors shadow-lg">
+                    <i data-lucide="key" class="text-gray-400 group-hover:text-yellow-400 w-6 h-6 transition-colors"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg">4. Entra</h3>
+                    <p class="text-xs text-gray-500">Recibe coordenadas y acceso</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
         </div>
 
         <div id="content-owner" class="grid grid-cols-1 md:grid-cols-3 gap-8 hidden">
             <div class="p-6 border-l border-white/10 hover:border-purple-500 transition-colors">
                 <i data-lucide="shield-check" class="text-purple-400 mb-4"></i>
-                <h3 class="text-xl font-bold text-white mb-2">Propiedad Intacta</h3>
+                <h3 class="text-xl font-bold text-white mb-2">La tierra sigue siendo tuya</h3>
                 <p class="text-sm text-gray-400 leading-relaxed">
-                    Nunca vendes tu tierra. Sigues siendo el dueño legítimo. Solo monetizas el "derecho de uso" temporal, protegido por contratos digitales inmutables.
+                    Nunca vendes. Sigues siendo el patrón. Solo rentas el permiso de uso por un tiempo, todo protegido con un contrato digital.
                 </p>
             </div>
             <div class="p-6 border-l border-white/10 hover:border-purple-500 transition-colors">
                 <i data-lucide="coins" class="text-purple-400 mb-4"></i>
-                <h3 class="text-xl font-bold text-white mb-2">Ingreso Pasivo Real</h3>
+                <h3 class="text-xl font-bold text-white mb-2">Gana dinero sin trabajarla</h3>
                 <p class="text-sm text-gray-400 leading-relaxed">
-                    Tu tierra deja de ser un gasto (predial, mantenimiento) y se convierte en un activo productivo. Recibe pagos automáticos sin trabajar el suelo tú mismo.
+                    Deja que tu terreno pague sus propios gastos (como el predial). Recibes dinero en tu cuenta sin tener que sudar la gota gorda.
                 </p>
             </div>
             <div class="p-6 border-l border-white/10 hover:border-purple-500 transition-colors">
                 <i data-lucide="activity" class="text-purple-400 mb-4"></i>
-                <h3 class="text-xl font-bold text-white mb-2">Regeneración de Suelo</h3>
+                <h3 class="text-xl font-bold text-white mb-2">Tu suelo mejora</h3>
                 <p class="text-sm text-gray-400 leading-relaxed">
-                    Conectamos con proyectos de agricultura regenerativa y conservación. Tu tierra mejora su salud biológica mientras alguien más invierte en ella.
+                    Conectamos con gente que cuida la tierra. Alguien más invierte en mejorar tu suelo mientras tú cobras la renta.
                 </p>
             </div>
-        </div>
-    </section>
 
-    <section class="py-24 bg-white/5 border-y border-white/5">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-white mb-12 text-center">Infraestructura para cualquier visión</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <div onclick="openVision('social')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
-    <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
-        <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
-        <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">LIFESTYLE</div>
-    </div>
-    <div class="flex justify-between items-center mb-2">
-        <h4 class="text-white font-bold">Refugio Social</h4>
-        <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
-    </div>
-    <p class="text-xs text-gray-400">Tu espacio privado para asados, amigos y noches de astronomía.</p>
-</div>
-
-<div onclick="openVision('glamping')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
-        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
-            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">NOMADISMO</div>
-        </div>
-        <div class="flex justify-between items-center mb-2">
-            <h4 class="text-white font-bold">Glamping Pop-up</h4>
-            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
-        </div>
-        <p class="text-xs text-gray-400">Instala domos geodésicos por temporada sin comprar el terreno.</p>
-    </div>
-
-<div onclick="openVision('farm')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
-    <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
-        <img src="own.png" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
-        <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">GASTRONOMÍA</div>
-    </div>
-    <div class="flex justify-between items-center mb-2">
-        <h4 class="text-white font-bold">Huerto Gastronómico</h4>
-        <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
-    </div>
-    <p class="text-xs text-gray-400">Cultivos exclusivos para restaurantes o autoconsumo familiar.</p>
-</div>
-    
-    <div onclick="openVision('wine')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
-        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
-            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">AGRI-TECH</div>
-        </div>
-        <div class="flex justify-between items-center mb-2">
-            <h4 class="text-white font-bold">Micro-Viñedos</h4>
-            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
-        </div>
-        <p class="text-xs text-gray-400">Renta parcelas específicas para cosechas boutique de alto valor.</p>
-    </div>
-
-    <div onclick="openVision('science')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
-        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
-            <img src="ryd.png" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
-            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">CIENCIA</div>
-        </div>
-        <div class="flex justify-between items-center mb-2">
-            <h4 class="text-white font-bold">Estaciones R&D</h4>
-            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
-        </div>
-        <p class="text-xs text-gray-400">Espacios temporales para pruebas de semillas, drones o robótica.</p>
-    </div>
-
-    <div onclick="openVision('impact')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
-        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
-            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">IMPACTO</div>
-        </div>
-        <div class="flex justify-between items-center mb-2">
-            <h4 class="text-white font-bold">Bonos de Carbono</h4>
-            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
-        </div>
-        <p class="text-xs text-gray-400">Patrocina la reforestación y obtén créditos digitales.</p>
-    </div>
-    
-</div>
-        </div>
-    </section>
-
-    <section class="max-w-6xl mx-auto px-4 py-24 relative">
+            <section class="max-w-6xl mx-auto px-4 py-24 relative">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-transparent via-green-500/20 to-transparent pointer-events-none"></div>
     
     <div class="text-center mb-16 relative z-10">
-        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Automatización Radical, ¿Como funciona?</h2>
+        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">¿Cómo funciona? (Sin complicaciones)</h2>
         <p class="text-sm text-gray-500 max-w-2xl mx-auto">
-            Convertimos átomos (tierra) en bits (activos digitales) para eliminar la fricción humana.
-            <span class="text-green-400">Del escaneo a tu cuenta bancaria en 4 pasos.</span>
+            Hacemos todo el trabajo pesado. Convertimos tu tierra física en un activo digital fácil de rentar.
+            <span class="text-green-400">Del campo a tu bolsillo en 4 pasos.</span>
         </p>
     </div>
 
@@ -430,8 +459,8 @@
                     <div class="absolute inset-0 bg-green-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
                 <div>
-                    <h3 class="text-white font-bold text-lg">1. Digitalización Física</h3>
-                    <p class="text-xs text-gray-500">Drones + Topografía + Validación</p>
+                    <h3 class="text-white font-bold text-lg">1. Vemos tu terreno</h3>
+                    <p class="text-xs text-gray-500">Usamos Drones y Mapas (Sin medir a mano)</p>
                 </div>
             </div>
 
@@ -440,8 +469,8 @@
                     <i data-lucide="file-code-2" class="text-gray-400 group-hover:text-purple-400 w-6 h-6 transition-colors"></i>
                 </div>
                 <div>
-                    <h3 class="text-white font-bold text-lg">2. Inyección al Protocolo</h3>
-                    <p class="text-xs text-gray-500">Legal Wrapper + Data + Minting</p>
+                    <h3 class="text-white font-bold text-lg">2. Reglas Claras</h3>
+                    <p class="text-xs text-gray-500">Creamos el "Contrato Digital" automático</p>
                 </div>
             </div>
 
@@ -450,8 +479,8 @@
                     <i data-lucide="globe-2" class="text-gray-400 group-hover:text-blue-400 w-6 h-6 transition-colors"></i>
                 </div>
                 <div>
-                    <h3 class="text-white font-bold text-lg">3. Match Algorítmico</h3>
-                    <p class="text-xs text-gray-500">Publicación + Filtrado + Selección</p>
+                    <h3 class="text-white font-bold text-lg">3. Te mostramos al mundo</h3>
+                    <p class="text-xs text-gray-500">Publicamos tu tierra para que la encuentren</p>
                 </div>
             </div>
 
@@ -460,8 +489,8 @@
                     <i data-lucide="wallet" class="text-gray-400 group-hover:text-yellow-400 w-6 h-6 transition-colors"></i>
                 </div>
                 <div>
-                    <h3 class="text-white font-bold text-lg">4. Ejecución "Zero-Touch"</h3>
-                    <p class="text-xs text-gray-500">Acceso Usuario vs. Pago Dueño</p>
+                    <h3 class="text-white font-bold text-lg">4. Cobras al instante</h3>
+                    <p class="text-xs text-gray-500">El dinero cae directo a tu cuenta</p>
                 </div>
             </div>
         </div>
@@ -474,52 +503,52 @@
                         <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
                         <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
                     </div>
-                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest" id="console-status">System: IDLE</span>
+                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest" id="console-status">Sistema: ESPERANDO...</span>
                 </div>
 
                 <div class="p-8 min-h-[300px] flex flex-col justify-center bg-[#0a0a0a]">
                     
                     <div id="p-content-1" class="process-content fade-in">
-                        <span class="text-green-500 font-mono text-xs mb-2 block">> INICIANDO ESCANEO LIDAR...</span>
-                        <h3 class="text-2xl font-bold text-white mb-4">Captura de la Realidad</h3>
+                        <span class="text-green-500 font-mono text-xs mb-2 block">> VOLANDO DRONES...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Mapeo del Terreno</h3>
                         <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                            No tienes que medir nada. Enviamos drones autónomos y un topógrafo certificado a tu propiedad. Generamos una nube de puntos 3D, validamos los linderos legales y analizamos la composición química del suelo.
+                            Olvídate de contratar topógrafos caros. Mandamos drones que escanean tu tierra. Revisamos que los papeles coincidan con lo que mide el terreno real y checamos qué tan fértil es el suelo.
                         </p>
                         <ul class="space-y-2">
-                            <li class="flex items-center gap-2 text-xs text-gray-300 font-mono"><i data-lucide="check-circle" class="w-3 h-3 text-green-500"></i> Generación de Polígono Geo-referenciado.</li>
-                            <li class="flex items-center gap-2 text-xs text-gray-300 font-mono"><i data-lucide="check-circle" class="w-3 h-3 text-green-500"></i> Validación de escrituras vs. terreno físico.</li>
+                            <li class="flex items-center gap-2 text-xs text-gray-300 font-mono"><i data-lucide="check-circle" class="w-3 h-3 text-green-500"></i> Mapa exacto generado.</li>
+                            <li class="flex items-center gap-2 text-xs text-gray-300 font-mono"><i data-lucide="check-circle" class="w-3 h-3 text-green-500"></i> Papeles en orden y validados.</li>
                         </ul>
                     </div>
 
                     <div id="p-content-2" class="process-content hidden fade-in">
-                        <span class="text-purple-500 font-mono text-xs mb-2 block">> COMPILANDO SMART CONTRACT...</span>
-                        <h3 class="text-2xl font-bold text-white mb-4">La "Envoltura" Legal</h3>
+                        <span class="text-purple-500 font-mono text-xs mb-2 block">> ESCRIBIENDO CONTRATO...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Blindaje Legal Digital</h3>
                         <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                            Toda la data recolectada (mapas, pH del suelo, escrituras) se encripta. Redactamos automáticamente los contratos de comodato o uso temporal y "minteamos" el terreno en el sistema. Ahora tu tierra es un activo digital programable.
+                            Con la información de tu terreno, la computadora escribe sola el contrato de uso. Lo subimos al sistema (Blockchain) para que quede registrado para siempre y nadie pueda hacer trampa. Tu tierra ya está lista para rentarse.
                         </p>
                         <div class="bg-purple-900/10 border border-purple-500/20 p-3 rounded text-[10px] font-mono text-purple-300">
-                            Hash: 0x7f...3a2b <br> Status: Legalmente Vinculante
+                            Firma Digital: 0x7f...3a2b <br> Estado: Válido Legalmente
                         </div>
                     </div>
 
                     <div id="p-content-3" class="process-content hidden fade-in">
-                        <span class="text-blue-500 font-mono text-xs mb-2 block">> BUSCANDO COINCIDENCIAS...</span>
-                        <h3 class="text-2xl font-bold text-white mb-4">Visibilidad Global</h3>
+                        <span class="text-blue-500 font-mono text-xs mb-2 block">> BUSCANDO INTERESADOS...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Te ponemos en el mapa</h3>
                         <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                            Tu terreno aparece en el marketplace. Cuando un usuario busca "Suelo ácido para Arándanos" o "Zona oscura para Astronomía", nuestro motor le muestra tu propiedad. Él ve los datos reales, no fotos maquilladas.
+                            Tu terreno aparece en nuestra tienda. Cuando alguien busca "Tierra buena para maíz" o "Lugar oscuro para ver estrellas", nuestro sistema le enseña TU propiedad. Ven los datos reales, sin mentiras.
                         </p>
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80" class="w-full h-24 object-cover rounded opacity-50 grayscale hover:grayscale-0 transition-all">
                     </div>
 
                     <div id="p-content-4" class="process-content hidden fade-in">
-                        <span class="text-yellow-500 font-mono text-xs mb-2 block">> EJECUTANDO TRANSACCIÓN...</span>
-                        <h3 class="text-2xl font-bold text-white mb-4">Cobro sin Interacción</h3>
+                        <span class="text-yellow-500 font-mono text-xs mb-2 block">> PROCESANDO PAGO...</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Cobras sin mover un dedo</h3>
                         <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                            El usuario selecciona tu tierra y paga. El contrato inteligente libera el dinero a tu wallet inmediatamente y genera el código de acceso temporal para el usuario. Tú recibes la notificación de "Fondos Recibidos" sin haber atendido ni una llamada.
+                            El usuario elige tu tierra y paga. El sistema te manda el dinero a tu cuenta inmediatamente y le da al usuario un código para entrar. Tú recibes el aviso de "Dinero Recibido" sin tener que haber contestado ni una llamada.
                         </p>
                         <div class="flex justify-between items-center bg-white/5 p-3 rounded border border-white/10">
                             <span class="text-xs text-gray-400">Estado del Dueño:</span>
-                            <span class="text-xs font-bold text-green-400 uppercase flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Pagado</span>
+                            <span class="text-xs font-bold text-green-400 uppercase flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Pagado y Feliz</span>
                         </div>
                     </div>
 
@@ -530,53 +559,243 @@
         </div>
     </div>
 </section>
+        </div>
+    </section>
 
-<section class="max-w-3xl mx-auto px-4 py-24">
-        <h2 class="text-2xl font-bold text-white mb-8 text-center flex items-center justify-center gap-2">
-            <i data-lucide="shield-alert" class="text-gray-500"></i>
-            Protocolos de Seguridad
-        </h2>
+    <section class="py-24 bg-white/5 border-y border-white/5">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Ideas para aprovechar la tierra</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <div onclick="openVision('social')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
+    <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
+        <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
+        <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">DIVERSIÓN</div>
+    </div>
+    <div class="flex justify-between items-center mb-2">
+        <h4 class="text-white font-bold">Carnita Asada / Estrellas</h4>
+        <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
+    </div>
+    <p class="text-xs text-gray-400">Renta un lugar privado solo para ti y tus amigos por un día.</p>
+</div>
+
+<div onclick="openVision('glamping')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
+        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">TURISMO</div>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+            <h4 class="text-white font-bold">Camping de Lujo</h4>
+            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
+        </div>
+        <p class="text-xs text-gray-400">Pon unas cabañas temporales y haz negocio en vacaciones.</p>
+    </div>
+
+<div onclick="openVision('farm')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
+    <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
+        <img src="own.png" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
+        <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">COMIDA</div>
+    </div>
+    <div class="flex justify-between items-center mb-2">
+        <h4 class="text-white font-bold">Huerto para Restaurante</h4>
+        <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
+    </div>
+    <p class="text-xs text-gray-400">Cultiva tus propias verduras frescas, del suelo a la mesa.</p>
+</div>
+    
+    <div onclick="openVision('wine')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
+        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">VINO</div>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+            <h4 class="text-white font-bold">Tu Propio Vino</h4>
+            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
+        </div>
+        <p class="text-xs text-gray-400">Ten tu viñedo sin comprar el rancho. Recibe tus botellas.</p>
+    </div>
+
+    <div onclick="openVision('science')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
+        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
+            <img src="ryd.png" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">PRUEBAS</div>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+            <h4 class="text-white font-bold">Campo de Pruebas</h4>
+            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
+        </div>
+        <p class="text-xs text-gray-400">Para probar drones, semillas nuevas o robots de campo.</p>
+    </div>
+
+    <div onclick="openVision('impact')" class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 cursor-pointer group hover:border-green-500/50">
+        <div class="h-32 mb-4 bg-gray-800 rounded-lg overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition-opacity">
+            <div class="absolute bottom-2 left-2 text-[10px] font-bold bg-black/80 px-2 py-1 rounded text-white border border-green-500/30">PLANETA</div>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+            <h4 class="text-white font-bold">Plantar Árboles</h4>
+            <i data-lucide="plus-circle" class="text-gray-600 group-hover:text-green-400 w-4 h-4 transition-colors"></i>
+        </div>
+        <p class="text-xs text-gray-400">Ayuda a reforestar y gana créditos por cuidar el aire.</p>
+    </div>
+    
+</div>
+        </div>
+    </section>
+
+    
+
+<section class="max-w-6xl mx-auto px-4 py-24 border-t border-white/5">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-white mb-4">Preguntas que nos hacen todo el tiempo</h2>
+            <p class="text-sm text-gray-500">Sin letras chiquitas. Hablando claro.</p>
+        </div>
         
-        <div class="space-y-4">
-            <div class="glass-panel p-6 rounded-xl cursor-pointer group" onclick="this.classList.toggle('bg-white/5')">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-sm font-bold text-white">¿Qué pasa si el usuario daña la tierra?</h3>
-                    <i data-lucide="chevron-down" class="text-gray-500 group-hover:text-white transition-colors"></i>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+
+            <div class="space-y-4">
+                <h3 class="text-green-400 font-bold uppercase tracking-widest text-xs mb-4 flex items-center gap-2">
+                    <i data-lucide="user" class="w-4 h-4"></i> Para el que busca Tierra
+                </h3>
+
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Es seguro ir a estos lugares?</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                Sí. Todos los terrenos y dueños son verificados presencialmente (Know Your Customer). Además, siempre enviamos la ubicación exacta y fotos reales antes de que pagues. Tienes soporte 24/7 durante tu estancia.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-400 mt-4 leading-relaxed hidden group-hover:block fade-in">
-                    Cada contrato inteligente retiene un "Depósito de Garantía Digital" (Escrow). Antes de finalizar la renta, un drone o un inspector local verifica el estado del suelo (pH, estructuras). Si hay daño, el depósito se transfiere al dueño instantáneamente para reparaciones.
-                </p>
+
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Puedo construir algo ahí?</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                <strong>Regla de Oro: Cero Cemento.</strong> Puedes poner cosas temporales: carpas, domos geodésicos, contenedores sobre vigas, cercas de madera o baños secos. Todo debe ser removible al terminar tu contrato.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Qué pasa si el terreno no es como en las fotos?</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                Tienes una <strong>Garantía de 24 horas</strong>. Si llegas y el lugar es un basurero o no existe, nos avisas el primer día, retenemos el pago al dueño y te devolvemos tu dinero íntegro.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Puedo llevar mascotas o hacer fiesta?</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                Cada terreno tiene sus reglas (como Airbnb). En el perfil verás íconos claros: "Pet Friendly", "Apto para Eventos" o "Zona de Silencio". Filtra según lo que necesites.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="glass-panel p-6 rounded-xl cursor-pointer group" onclick="this.classList.toggle('bg-white/5')">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-sm font-bold text-white">¿Es esto legal en mi país?</h3>
-                    <i data-lucide="chevron-down" class="text-gray-500 group-hover:text-white transition-colors"></i>
-                </div>
-                <p class="text-xs text-gray-400 mt-4 leading-relaxed hidden group-hover:block fade-in">
-                    Sí. Operamos bajo el marco de "Contratos Privados de Uso Temporal" y Comodatos, los cuales son legales en el 99% de las jurisdicciones. Blockchain solo actúa como un notario digital infalsificable para probar la fecha y los acuerdos firmados.
-                </p>
-            </div>
+            <div class="space-y-4">
+                <h3 class="text-purple-400 font-bold uppercase tracking-widest text-xs mb-4 flex items-center gap-2">
+                    <i data-lucide="crown" class="w-4 h-4"></i> Para el Dueño
+                </h3>
 
-            <div class="glass-panel p-6 rounded-xl cursor-pointer group" onclick="this.classList.toggle('bg-white/5')">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-sm font-bold text-white">¿Por qué es mejor que rentar tradicionalmente?</h3>
-                    <i data-lucide="chevron-down" class="text-gray-500 group-hover:text-white transition-colors"></i>
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Qué pasa si no se quieren salir? (Okupas)</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                Nuestro contrato digital no es de arrendamiento, es un <strong>"Comodato de Uso Temporal"</strong>. Esto legalmente impide que generen derechos de antigüedad. Además, tenemos alianza con seguridad local para desalojo inmediato por invasión si se vence el plazo.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-400 mt-4 leading-relaxed hidden group-hover:block fade-in">
-                    Tradicionalmente necesitas meses de negociación, abogados y rentas de hectáreas completas por años. Aquí puedes rentar 500m² por 3 días. Es liquidez, velocidad y precisión.
-                </p>
+
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Quién paga los daños si rompen algo?</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                El sistema cobra automáticamente un <strong>Depósito en Garantía</strong> al usuario antes de entrar. Si al salir reportas daños (con fotos), ese dinero se te transfiere a ti para reparaciones en lugar de devolverse al usuario.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Tengo que pagar impuestos?</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                Sí, es un ingreso. La plataforma puede emitir la factura por ti y retener los impuestos correspondientes (según tu país), o depositarte el bruto para que tú lo declares. Tú eliges en tu configuración fiscal.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-xl cursor-pointer group hover:bg-white/5 transition-all" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold text-white">¿Quién se encarga de entregar las llaves?</h4>
+                        <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-300 faq-icon"></i>
+                    </div>
+                    <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out faq-content">
+                        <div class="overflow-hidden">
+                            <p class="text-xs text-gray-400 mt-4 leading-relaxed">
+                                Nadie. Recomendamos instalar un candado de combinación ($20 USD) en la tranca. El sistema le da el código al usuario solo cuando paga. Así no tienes que ir al terreno cada vez que alguien entra.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
     <footer class="border-t border-white/10 py-16 text-center">
-        <p class="text-xs font-bold text-green-500 uppercase tracking-[0.3em] mb-4">Arquitectura de Continuidad</p>
-        <h4 class="text-2xl font-bold text-white mb-8">La tierra espera tu visión.</h4>
+        <p class="text-xs font-bold text-green-500 uppercase tracking-[0.3em] mb-4">Construyendo Futuro</p>
+        <h4 class="text-2xl font-bold text-white mb-8">Tu tierra, tu oportunidad.</h4>
+        <div class="flex flex-col items-center justify-center gap-4">
+            <a href="demo.html" class="group relative px-8 py-4 bg-white text-black font-bold text-sm uppercase tracking-widest rounded-full hover:bg-gray-200 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] flex items-center gap-3">
+                <span>Entrar al Simulador</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+            <!-- <p class="text-[10px] text-gray-500 font-mono">No necesitas tarjeta de crédito para probar</p> -->
+        </div>
+        <br>
         <div class="flex justify-center gap-6 text-xs text-gray-500 font-mono">
-            <span>INDEXADO: AWS/EC2</span>
-            <span>SEGURIDAD: SSL/TLS</span>
-            <span>DATA: OPEN SOIL API</span>
+            <span>SERVIDOR: SEGURO</span>
+            <span>CONEXIÓN: PRIVADA</span>
+            <span>DATOS: ABIERTOS</span>
         </div>
     </footer>
 
@@ -607,7 +826,7 @@
                             <div class="p-2 bg-green-500/20 rounded-lg text-green-400">
                                 <i data-lucide="zap" class="w-4 h-4"></i>
                             </div>
-                            <span class="text-xs font-bold text-white uppercase">Velocidad de Despliegue</span>
+                            <span class="text-xs font-bold text-white uppercase">Tiempo para empezar</span>
                         </div>
                         <div class="w-full bg-gray-700 h-1.5 rounded-full overflow-hidden">
                             <div class="bg-green-500 h-full w-[85%]"></div>
@@ -618,7 +837,7 @@
 
                 <div class="space-y-4 flex flex-col justify-between">
                     <div>
-                        <h4 class="text-white text-xs font-bold uppercase mb-4 border-b border-white/10 pb-2">Potencial del Proyecto</h4>
+                        <h4 class="text-white text-xs font-bold uppercase mb-4 border-b border-white/10 pb-2">Ventajas Clave</h4>
                         <ul class="space-y-3">
                             <li class="flex items-start gap-3 text-xs text-gray-300">
                                 <i data-lucide="check" class="w-4 h-4 text-green-500 shrink-0"></i>
@@ -636,7 +855,7 @@
                     </div>
 
                     <button class="w-full bg-white hover:bg-gray-200 text-black font-bold py-3 rounded-lg transition-all text-xs uppercase tracking-widest flex items-center justify-center gap-2">
-                        <span>Iniciar Exploración</span>
+                        <span>Me interesa, quiero ver más</span>
                         <i data-lucide="arrow-right" class="w-3 h-3"></i>
                     </button>
                 </div>
@@ -651,76 +870,75 @@
         // Inicializar iconos al cargar
         lucide.createIcons();
 
-        // --- 1. DATOS DE LOS MODALES (VISION) ---
-        // Definimos esto al inicio para evitar errores de referencia
+        // --- 1. DATOS DE LOS MODALES (VISION) - LENGUAJE HUMANO ---
         const visionData = {
             'wine': {
-                title: 'Micro-Viñedo Personal',
-                tag: 'Agri-Tech',
-                desc: 'Deja de soñar con tener un viñedo "algún día". Renta 500m² en zona volcánica, monitorea la uva desde tu celular y recibe tus botellas personalizadas al final de la temporada.',
-                speed: 'Lanzamiento en: 3 Semanas',
-                feats: ['Sin comprar tierra (Ahorras 95%).', 'Marca propia y etiquetado.', 'Gestión remota total.'],
+                title: 'Tu Propio Viñedo',
+                tag: 'Vino',
+                desc: '¿Siempre quisiste tener tu marca de vino? No necesitas comprar un rancho millonario. Renta 500m² de tierra volcánica, ve cómo crecen tus uvas desde el cel y recibe tus botellas con tu etiqueta al final.',
+                speed: 'Empiezas en: 3 Semanas',
+                feats: ['Ahorras 95% (No compras tierra).', 'Tu propia marca y etiqueta.', 'Todo lo manejas desde el cel.'],
                 img: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80'
             },
             'glamping': {
-                title: 'Glamping & Hospitalidad',
-                tag: 'Nomadismo',
-                desc: 'Instala domos geodésicos en un bosque de niebla. Valida tu modelo de negocio en temporada alta y retírate si deseas. Cero concreto, cero huella.',
-                speed: 'Instalación en: 7 Días',
-                feats: ['ROI estimado: 6-8 meses.', 'Permisos simplificados.', 'Acceso a zonas vírgenes.'],
+                title: 'Negocio de Glamping',
+                tag: 'Turismo',
+                desc: 'El turismo ya cambió. La gente quiere experiencias, no hoteles aburridos. Pon 3 domos en un bosque bonito. Gana dinero en vacaciones y si te cansas, los quitas y listo. Sin construir cemento.',
+                speed: 'Instalado en: 7 Días',
+                feats: ['Recuperas inversión en 6 meses.', 'Permisos fáciles (es temporal).', 'Lugares únicos donde no hay hoteles.'],
                 img: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80'
             },
             'science': {
-                title: 'Laboratorio de Campo (R&D)',
+                title: 'Campo de Pruebas',
                 tag: 'Ciencia',
-                desc: 'Para startups de AgTech. Renta condiciones específicas (pH, altura, humedad) por semanas para probar tus drones o semillas.',
-                speed: 'Acceso: Inmediato',
-                feats: ['Data histórica disponible.', 'Seguridad perimetral.', 'Contratos flexibles.'],
-                img: 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80'
+                desc: 'Para empresas nuevas de tecnología. Si necesitas probar drones o semillas especiales, renta un pedazo de tierra con las condiciones exactas que ocupas, solo por las semanas que dure tu prueba.',
+                speed: 'Entras: Inmediatamente',
+                feats: ['Historial del clima y suelo incluido.', 'Lugar seguro y cerrado.', 'Contratos flexibles.'],
+                img: 'ryd.png'
             },
             'impact': {
-                title: 'Inversión Climática',
-                tag: 'Impacto',
-                desc: 'Financia la regeneración de tierra degradada. Los sensores IoT miden la captura de CO2 y generan créditos de carbono.',
-                speed: 'Certificación: Automática',
-                feats: ['Activo líquido (Créditos).', 'Trazabilidad Blockchain.', 'Impacto real medible.'],
+                title: 'Plantar Árboles (Bonos)',
+                tag: 'Planeta',
+                desc: 'Ayuda a revivir un terreno seco. Paga para que se planten árboles. Unos sensores miden cuánto aire limpio generan y te dan certificados (bonos) que puedes vender o guardar.',
+                speed: 'Certificado: Automático',
+                feats: ['Es dinero real (Créditos).', 'Todo registrado digitalmente.', 'Ayudas al planeta de verdad.'],
                 img: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80'
             },
             'social': {
-                title: 'Tu Spot Privado (24h)',
-                tag: 'Experiencia',
-                desc: 'Renta un pedazo de naturaleza privado por 24 horas. Carnita asada, telescopio o fogata con amigos sin vecinos molestos.',
-                speed: 'Reserva: Instantánea',
-                feats: ['Privacidad total.', 'Acceso vehicular seguro.', 'Uso por evento único.'],
+                title: 'Tu Lugar Privado (24h)',
+                tag: 'Diversión',
+                desc: 'Renta un pedazo de campo solo para ti por 24 horas. Arma la carnita asada, lleva tu telescopio o haz una fogata con tus compas. Sin vecinos molestos, pura libertad.',
+                speed: 'Reserva: Al instante',
+                feats: ['Privacidad total (Solo tú).', 'Llegas fácil en coche.', 'Úsalo un día y ya.'],
                 img: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80'
             },
             'farm': {
-                title: 'Farm-to-Table Real',
-                tag: 'Sostenible',
-                desc: 'Cultivos exclusivos para restaurantes. Nosotros cuidamos la siembra, tú recibes la cosecha de calidad Michelin.',
-                speed: 'Setup: 48 Horas',
-                feats: ['Menú con ingredientes propios.', 'Trazabilidad total.', 'Sin intermediarios.'],
-                img: 'https://images.unsplash.com/photo-1595855709940-fa13725797d7?auto=format&fit=crop&q=80'
+                title: 'Huerto para Restaurantes',
+                tag: 'Comida',
+                desc: '¿Tienes restaurante y quieres los mejores tomates? Renta surcos de tierra. Nosotros cuidamos que crezcan, tú solo recibes la cosecha de calidad mundial para tus platillos.',
+                speed: 'Listo en: 48 Horas',
+                feats: ['Ingredientes únicos para tu menú.', 'Sabes exactamente de dónde viene.', 'Más barato (sin intermediarios).'],
+                img: 'own.png'
             }
         };
 
         // --- 2. CONFIGURACIÓN DEL MAPA/GRID ---
         const zones = {
             'A': { 
-                name: 'Zona Volcánica Alta', 
-                desc: 'Suelo poroso rico en minerales volcánicos. Drenaje excelente.',
+                name: 'Zona Alta (Volcánica)', 
+                desc: 'Tierra porosa con minerales volcánicos. El agua se absorbe muy bien.',
                 color: 'border-l-red-500', 
                 basePrice: 0.5 
             },
             'B': { 
                 name: 'Valle de Arcilla', 
-                desc: 'Alta retención hídrica. Ideal para cultivos de raíz profunda.',
+                desc: 'Guarda mucha humedad. Perfecta para plantas con raíces grandes.',
                 color: 'border-l-yellow-500', 
                 basePrice: 0.3 
             },
             'C': { 
                 name: 'Bosque de Niebla', 
-                desc: 'Área de conservación con permisos para ecoturismo de bajo impacto.',
+                desc: 'Área protegida y verde. Solo para turismo ecológico tranquilo.',
                 color: 'border-l-green-500', 
                 basePrice: 0.8 
             }
@@ -823,7 +1041,7 @@
                 badge.innerText = "Descuento Diario (5%)";
                 badge.className = "text-[10px] font-mono text-blue-400";
             } else {
-                badge.innerText = "Tarifa Estándar";
+                badge.innerText = "Tarifa Normal";
                 badge.className = "text-[10px] font-mono text-gray-400";
             }
 
@@ -935,13 +1153,82 @@
                 content.classList.add('fade-in');
             }
 
-            const statusText = ['SCANNING_TERRAIN', 'MINTING_ASSET', 'MATCHING_USER', 'EXECUTING_PAYMENT'];
+            const statusText = ['VOLANDO DRONES', 'CREANDO CONTRATO', 'BUSCANDO CLIENTES', 'PAGANDO AL DUEÑO'];
             const statusEl = document.getElementById('console-status');
-            if(statusEl) statusEl.innerText = `SYSTEM: ${statusText[stepId-1]}...`;
+            if(statusEl) statusEl.innerText = `SISTEMA: ${statusText[stepId-1]}...`;
             
             // Re-renderizar iconos por si acaso
             lucide.createIcons();
         }
+
+        // --- LOGICA DE PROCESO USUARIO (NUEVA) ---
+        function setUserProcess(stepId) {
+            // 1. Resetear estilos
+            document.querySelectorAll('.u-process-step').forEach(el => {
+                el.classList.remove('bg-white/10', 'border-white/10');
+                el.classList.add('border-transparent');
+            });
+
+            // 2. Activar paso
+            const activeStep = document.getElementById(`u-step-${stepId}`);
+            if (activeStep) {
+                activeStep.classList.remove('border-transparent');
+                activeStep.classList.add('bg-white/10', 'border-white/10');
+            }
+
+            // 3. Cambiar contenido consola
+            document.querySelectorAll('.u-process-content').forEach(el => el.classList.add('hidden'));
+            
+            const content = document.getElementById(`u-content-${stepId}`);
+            if (content) {
+                content.classList.remove('hidden');
+                content.classList.remove('fade-in');
+                void content.offsetWidth; // Reiniciar animación
+                content.classList.add('fade-in');
+            }
+
+            // 4. Actualizar texto estado
+            const statusText = ['BUSCANDO OPCIONES', 'CONFIGURANDO', 'GENERANDO CONTRATO', 'ACCESO HABILITADO'];
+            const statusEl = document.getElementById('u-console-status');
+            if(statusEl) statusEl.innerText = `SISTEMA: ${statusText[stepId-1]}...`;
+            
+            lucide.createIcons();
+        }
+
+        // --- LOGICA DE ACORDEÓN (FAQ) ---
+        function toggleFaq(element) {
+            // Encontrar el contenido dentro del elemento clickeado
+            const content = element.querySelector('.faq-content');
+            const icon = element.querySelector('.faq-icon');
+            
+            // Revisar si ya está abierto
+            const isOpen = content.classList.contains('grid-rows-[1fr]');
+            
+            // Cerrar todos primero (Opcional: si quieres que solo uno esté abierto a la vez)
+            /* document.querySelectorAll('.faq-content').forEach(el => el.classList.remove('grid-rows-[1fr]'));
+            document.querySelectorAll('.faq-content').forEach(el => el.classList.add('grid-rows-[0fr]'));
+            document.querySelectorAll('.faq-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+            */
+
+            if (isOpen) {
+                // Cerrar
+                content.classList.remove('grid-rows-[1fr]');
+                content.classList.add('grid-rows-[0fr]');
+                icon.style.transform = 'rotate(0deg)';
+                element.classList.remove('bg-white/5'); // Quitar highlight
+            } else {
+                // Abrir
+                content.classList.remove('grid-rows-[0fr]');
+                content.classList.add('grid-rows-[1fr]');
+                icon.style.transform = 'rotate(180deg)';
+                element.classList.add('bg-white/5'); // Mantener highlight
+            }
+        }
+
+        // Inicializar también esta sección
+        setTimeout(() => {
+            setUserProcess(1);
+        }, 150);
 
         // --- INICIALIZACIÓN SEGURA ---
         setTimeout(() => {

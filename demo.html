@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador | Landm2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ESTILOS NECESARIOS PARA EL DEMO */
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .glass-panel { 
+            background: rgba(20, 20, 20, 0.8); 
+            backdrop-filter: blur(16px); 
+            border: 1px solid rgba(255, 255, 255, 0.06); 
+        }
+
+        .land-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            aspect-ratio: 16/9;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .plot {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .plot:hover { background: rgba(255,255,255,0.2); }
+        .plot.selected { background: rgba(34, 197, 94, 0.4); border: 1px solid #22c55e; }
+        .plot.occupied {
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            cursor: not-allowed;
+            pointer-events: none; 
+        }
+
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
+            background: #22c55e; cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(34,197,94,0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #333; border-radius: 2px; }
+        
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .tab-btn-active { border-bottom: 2px solid #22c55e; color: white; }
+        .tab-btn-inactive { border-bottom: 2px solid transparent; color: #666; }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex flex-col items-center min-h-screen">
+
+    <header class="w-full max-w-[1400px] flex justify-between items-center mb-8 fade-in">
+        <a href="index.html" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Volver al Inicio
+        </a>
+        <div class="flex items-center gap-3">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="text-white font-bold tracking-widest uppercase text-xs">Simulador En Vivo</span>
+        </div>
+    </header>
+
+    <main class="w-full max-w-[1400px] fade-in" style="animation-delay: 0.1s;">
+        
+        <div class="flex justify-center gap-4 mb-8">
+            <button class="px-6 py-2 rounded-full border border-green-500/50 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest cursor-default">
+                Modo: Selección Libre
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-8 glass-panel p-2 rounded-2xl relative">
+                <div class="absolute top-4 left-4 z-10 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] uppercase text-white font-mono border border-white/10">
+                    📡 Vista Satelital: Rancho "El Horizonte"
+                </div>
+                
+                <div class="land-grid w-full h-auto" id="grid-container"></div>
+                
+                <div class="flex justify-between items-center mt-3 px-2">
+                    <div class="text-[10px] text-gray-500 uppercase font-mono flex gap-4">
+                        <span>Cuadro: 500m²</span>
+                        <span>Total: 24 Ha</span>
+                    </div>
+                    <div class="flex gap-4 text-[10px] uppercase">
+                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full"></span> Libre</span>
+                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-white/50 rounded-full"></span> Seleccionado</span>
+                        <span class="flex items-center gap-2"><span class="w-2 h-2 bg-white/5 rounded-full border border-white/10"></span> Ocupado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 space-y-4">
+                
+                <div class="glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative" id="info-panel">
+                    <div id="panel-empty" class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10 bg-[#141414]">
+                        <i data-lucide="mouse-pointer-2" class="w-10 h-10 text-gray-700 mb-3"></i>
+                        <h3 class="text-white font-bold">Elige tu espacio</h3>
+                        <p class="text-xs text-gray-500 max-w-[200px]">Toca los cuadros en el mapa para ver detalles y precios.</p>
+                    </div>
+
+                    <div id="panel-content" class="hidden h-full flex flex-col">
+                        <div class="p-6 pb-0 bg-white/5 border-b border-white/5">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-lg font-bold text-white" id="panel-title">Zona A</h3>
+                                    <p class="text-[10px] text-green-400 font-mono mt-1">
+                                        <span id="panel-count">0</span> Cuadros | <span id="panel-area">0</span> m²
+                                    </p>
+                                </div>
+                                <div class="bg-black/40 px-2 py-1 rounded border border-white/10">
+                                    <span class="text-[10px] text-gray-400 font-mono block">CALIDAD</span>
+                                    <span class="text-xs font-bold text-white">Excelente</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-6">
+                                <button onclick="switchTab('resumen')" id="tab-btn-resumen" class="tab-btn-active text-[10px] font-bold uppercase pb-3 transition-colors">Detalles</button>
+                                <button onclick="switchTab('suelo')" id="tab-btn-suelo" class="tab-btn-inactive text-[10px] font-bold uppercase pb-3 transition-colors">Suelo</button>
+                                <button onclick="switchTab('legal')" id="tab-btn-legal" class="tab-btn-inactive text-[10px] font-bold uppercase pb-3 transition-colors">Trato</button>
+                            </div>
+                        </div>
+
+                        <div class="p-6 flex-1 bg-[#141414]">
+                            <div id="tab-resumen" class="space-y-4 fade-in">
+                                <p class="text-xs text-gray-400 leading-relaxed" id="panel-desc">...</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="bg-white/5 p-2 rounded border border-white/5">
+                                        <span class="text-[9px] text-gray-500 uppercase block">Terreno</span>
+                                        <span class="text-xs text-white">Plano</span>
+                                    </div>
+                                    <div class="bg-white/5 p-2 rounded border border-white/5">
+                                        <span class="text-[9px] text-gray-500 uppercase block">Acceso</span>
+                                        <span class="text-xs text-white">Carretera 50m</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tab-suelo" class="hidden space-y-4 fade-in">
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                                            <span>Fertilidad (N)</span> <span>Alta</span>
+                                        </div>
+                                        <div class="w-full bg-gray-800 h-1 rounded-full"><div class="bg-green-500 h-1 rounded-full w-[80%]"></div></div>
+                                    </div>
+                                    <div class="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded text-[10px] text-yellow-200 mt-2">
+                                        ⚠ Nota: Tierra descansada 6 meses.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tab-legal" class="hidden space-y-3 fade-in">
+                                <ul class="space-y-2">
+                                    <li class="flex gap-2 text-[10px] text-gray-400">
+                                        <i data-lucide="check-circle" class="w-3 h-3 text-green-500"></i> Uso Mixto
+                                    </li>
+                                    <li class="flex gap-2 text-[10px] text-gray-400">
+                                        <i data-lucide="shield" class="w-3 h-3 text-green-500"></i> Seguro Incluido
+                                    </li>
+                                </ul>
+                                <button class="w-full mt-2 py-1.5 border border-white/10 rounded text-[10px] text-white hover:bg-white/10 transition-colors">
+                                    Ver Contrato PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-xs font-bold uppercase text-white">¿Cuánto tiempo?</span>
+                        <span class="text-[10px] font-mono text-green-400" id="discount-badge">Tarifa Normal</span>
+                    </div>
+                    
+                    <div class="flex gap-3 mb-2">
+                        <div class="flex-1 bg-black/40 rounded-lg border border-white/10 flex items-center px-3">
+                            <input type="number" id="duration-val" value="1" min="1" class="w-full bg-transparent text-white font-mono font-bold outline-none text-sm py-2" oninput="updateTimeContext()">
+                        </div>
+                        <div class="w-1/2 relative">
+                            <select id="duration-unit" class="w-full h-full bg-black/40 text-white text-xs font-bold uppercase px-3 rounded-lg border border-white/10 outline-none appearance-none cursor-pointer" onchange="updateTimeContext()">
+                                <option value="h">Horas</option>
+                                <option value="d">Días</option>
+                                <option value="m">Meses</option>
+                                <option value="y">Años</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl bg-gradient-to-br from-gray-900 to-black border-t-2 border-t-green-500/50">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-gray-400 text-xs uppercase">Total</span>
+                        <div class="text-right">
+                            <span class="text-3xl font-bold text-white tracking-tight">$<span id="price-display">0</span></span>
+                            <span class="text-[10px] text-gray-500 block">Dólares (Aprox)</span>
+                        </div>
+                    </div>
+                    <div class="h-px bg-white/10 my-4"></div>
+                    <button class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-gray-200 transition-all text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+                        <span>Simular Compra</span>
+                        <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // --- DATOS DEL DEMO ---
+        const zones = {
+            'A': { name: 'Zona Alta', desc: 'Suelo poroso, ideal frutales.', color: 'border-l-red-500', basePrice: 0.5 },
+            'B': { name: 'Valle', desc: 'Mucha agua, cultivos grandes.', color: 'border-l-yellow-500', basePrice: 0.3 },
+            'C': { name: 'Bosque', desc: 'Turismo ecológico.', color: 'border-l-green-500', basePrice: 0.8 }
+        };
+
+        let state = { selected: [], lastZoneType: null };
+
+        // GENERAR GRID
+        const grid = document.getElementById('grid-container');
+        for(let i=0; i<64; i++) {
+            const div = document.createElement('div');
+            let zKey = 'B';
+            if(i < 16) zKey = 'A';
+            if(i > 48) zKey = 'C';
+            const isOccupied = Math.random() < 0.2;
+            div.className = `plot ${isOccupied ? 'occupied' : ''}`;
+            div.dataset.zone = zKey;
+            div.dataset.id = i;
+            if(!isOccupied) div.onclick = () => togglePlot(div, zKey);
+            grid.appendChild(div);
+        }
+
+        // LÓGICA DE SELECCIÓN
+        function togglePlot(div, zoneKey) {
+            const id = div.dataset.id;
+            if(div.classList.contains('selected')) {
+                div.classList.remove('selected');
+                state.selected = state.selected.filter(x => x !== id);
+            } else {
+                div.classList.add('selected');
+                state.selected.push(id);
+                state.lastZoneType = zoneKey;
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            const panelEmpty = document.getElementById('panel-empty');
+            const panelContent = document.getElementById('panel-content');
+            const panelInfo = document.getElementById('info-panel');
+
+            if (state.selected.length === 0) {
+                panelEmpty.classList.remove('hidden');
+                panelContent.classList.add('hidden');
+                panelInfo.className = "glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative";
+                document.getElementById('price-display').innerText = "0";
+            } else {
+                panelEmpty.classList.add('hidden');
+                panelContent.classList.remove('hidden');
+                const zoneData = zones[state.lastZoneType];
+                document.getElementById('panel-title').innerText = zoneData.name;
+                document.getElementById('panel-desc').innerText = zoneData.desc;
+                document.getElementById('panel-count').innerText = state.selected.length;
+                document.getElementById('panel-area').innerText = (state.selected.length * 500).toLocaleString();
+                panelInfo.className = `glass-panel p-0 rounded-2xl min-h-[320px] overflow-hidden flex flex-col transition-all relative border-l-4 ${zoneData.color}`;
+                calculatePrice();
+            }
+        }
+
+        function updateTimeContext() { calculatePrice(); }
+
+        function calculatePrice() {
+            if(state.selected.length === 0) return;
+            const val = parseFloat(document.getElementById('duration-val').value) || 0;
+            const unit = document.getElementById('duration-unit').value;
+            const factors = { 'h': 1, 'd': 24, 'm': 720, 'y': 8760 };
+            const totalHours = val * factors[unit];
+            let total = zones[state.lastZoneType].basePrice * state.selected.length * totalHours;
+            
+            const badge = document.getElementById('discount-badge');
+            if(totalHours >= 720) { total *= 0.8; badge.innerText = "Descuento (20%)"; badge.className="text-[10px] font-mono text-green-400"; }
+            else if (totalHours >= 24) { total *= 0.95; badge.innerText = "Descuento (5%)"; badge.className="text-[10px] font-mono text-blue-400"; }
+            else { badge.innerText = "Tarifa Normal"; badge.className="text-[10px] font-mono text-gray-400"; }
+            
+            document.getElementById('price-display').innerText = Math.round(total).toLocaleString();
+        }
+
+        function switchTab(tabName) {
+            ['resumen', 'suelo', 'legal'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).className = "tab-btn-inactive text-[10px] font-bold uppercase pb-3 transition-colors";
+            });
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabName}`).className = "tab-btn-active text-[10px] font-bold uppercase pb-3 transition-colors";
+        }
+    </script>
+</body>
+</html>
